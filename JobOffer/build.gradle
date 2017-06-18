@@ -9,9 +9,10 @@ repositories {
 }
 
 dependencies {
-    // compile 'com.yammer.dropwizard:dropwizard-core:0.6.2'
-    compile 'io.dropwizard:dropwizard-core:1.0.3'
-    compile 'io.dropwizard:dropwizard-configuration:1.0.3'
+    compile 'io.dropwizard:dropwizard-core:1.0.6'
+    compile 'io.dropwizard:dropwizard-configuration:1.0.6'
+    compile 'io.dropwizard:dropwizard-assets:1.0.6'
+    compile 'io.dropwizard:dropwizard-views:1.0.6'
 }
 
 compileJava {
@@ -37,7 +38,6 @@ jar {
         exclude 'META-INF/*.RSA'
     }
     manifest {
-        attributes('Main-Class': 'example.application.HelloWorldApplication')
-        // attributes('Main-Class': 'org.gradle.service.HelloWorldService')
+        attributes('Main-Class': 'api.JobOfferListApi')
     }
 }
