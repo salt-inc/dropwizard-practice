@@ -1,2 +1,4 @@
 server:
   rootPath: /api/
+
+occupationTypeId: 9999

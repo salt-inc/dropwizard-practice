@@ -13,6 +13,7 @@ dependencies {
     compile 'io.dropwizard:dropwizard-configuration:1.0.6'
     compile 'io.dropwizard:dropwizard-assets:1.0.6'
     compile 'io.dropwizard:dropwizard-views:1.0.6'
+    compile 'io.dropwizard:dropwizard-client:1.0.6'
 }
 
 compileJava {

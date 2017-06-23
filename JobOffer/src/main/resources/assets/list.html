@@ -5,19 +5,22 @@
 		<meta http-equiv="content-language" content="ja">
 		<meta name="author" content="Kazushige Yamaguchi">
 		<title>求人一覧画面</title>
+		<script type="text/javascript" src="js/list.js"></script>
+		<script src="js/jquery-3.2.1.min.js"></script>
 	</head>
 	
 	<body>
 		<h1>求人一覧</h1>
-		<form method="get" action="">
+		<!--<form action="/api/list" method="get">-->
 		<p>
 			<h2>検索</h2>
-			職種ID：<input type="text" name="occupationTypeId"><br>
-			業種ID：<input type="text" name="industryTypeId"><br>
-			フリーワード検索：<input type="text" name="freeWord"><br>
-			<input type="submit" value="検索"><br>
+			職種ID：<input type="text" name="occupationTypeId" id="occupationTypeId"><br>
+			業種ID：<input type="text" name="industryTypeId" id="industryTypeId"><br>
+			フリーワード検索：<input type="text" name="freeWord" id="freeWord"><br>
+			<!--<input type="submit" value="検索" id="search"><br>-->
+			<input type="button" value="検索" onClick="search()">
 		</p>
-		</form>
+		<!--</form>-->
 		<p>
 			<h2>↓検索結果</h2>
 			求人ID：<br>
@@ -30,5 +33,8 @@
 			キャッチコピー：<br>
 			概要：<br>
 		</p>
+		<div id="result">
+		<p>結果：</p>
+		</div>
 	</body>
 </html>
