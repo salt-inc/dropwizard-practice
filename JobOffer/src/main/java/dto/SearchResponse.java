@@ -3,7 +3,7 @@ package dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SearchResponce {
+public class SearchResponse {
 	
 	/** 業種ID */
 	private String industryTypeId;
@@ -15,7 +15,7 @@ public class SearchResponce {
 	final String freeWord;
 	
 	@JsonCreator
-	public SearchResponce(String industryTypeId, String occupationTypeId, String freeWord) {
+	public SearchResponse(String industryTypeId, String occupationTypeId, String freeWord) {
 		this.industryTypeId = industryTypeId;
 		this.occupationTypeId = occupationTypeId;
 		this.freeWord = freeWord;

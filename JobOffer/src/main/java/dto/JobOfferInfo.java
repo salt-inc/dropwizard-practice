@@ -9,22 +9,22 @@ package dto;
 public class JobOfferInfo {
 	
 	/** 求人ID */
-	private int jobOfferId;
+	private String jobOfferId;
 	
 	/** 企業ID */
-	private int company;
+	private String company;
 	
 	/** 求人名 */
 	private String jobOfferName;
 	
 	/** 業種ID */
-	private int industryTypeId;
+	private String industryTypeId;
 	
 	/** 業種 */
 	private String industryTypeName;
 	
 	/** 職種ID */
-	private int occupationTypeId;
+	private String occupationTypeId;
 	
 	/** 職種 */
 	private String occupationTypeName;
@@ -35,19 +35,19 @@ public class JobOfferInfo {
 	/** 概要 */
 	private String jobOfferOverview;
 
-	public int getJobOfferId() {
+	public String getJobOfferId() {
 		return jobOfferId;
 	}
 
-	public void setJobOfferId(int jobOfferId) {
+	public void setJobOfferId(String jobOfferId) {
 		this.jobOfferId = jobOfferId;
 	}
 
-	public int getCompany() {
+	public String getCompany() {
 		return company;
 	}
 
-	public void setCompany(int company) {
+	public void setCompany(String company) {
 		this.company = company;
 	}
 
@@ -59,11 +59,11 @@ public class JobOfferInfo {
 		this.jobOfferName = jobOfferName;
 	}
 
-	public int getIndustryTypeId() {
+	public String getIndustryTypeId() {
 		return industryTypeId;
 	}
 
-	public void setIndustryTypeId(int industryTypeId) {
+	public void setIndustryTypeId(String industryTypeId) {
 		this.industryTypeId = industryTypeId;
 	}
 
@@ -75,11 +75,11 @@ public class JobOfferInfo {
 		this.industryTypeName = industryTypeName;
 	}
 
-	public int getOccupationTypeId() {
+	public String getOccupationTypeId() {
 		return occupationTypeId;
 	}
 
-	public void setOccupationTypeId(int occupationTypeId) {
+	public void setOccupationTypeId(String occupationTypeId) {
 		this.occupationTypeId = occupationTypeId;
 	}
 
