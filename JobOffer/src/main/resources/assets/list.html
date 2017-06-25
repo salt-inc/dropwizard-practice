@@ -11,30 +11,47 @@
 	
 	<body>
 		<h1>求人一覧</h1>
-		<!--<form action="/api/list" method="get">-->
-		<p>
+		<div id="searchBox">
 			<h2>検索</h2>
 			職種ID：<input type="text" name="occupationTypeId" id="occupationTypeId"><br>
 			業種ID：<input type="text" name="industryTypeId" id="industryTypeId"><br>
 			フリーワード検索：<input type="text" name="freeWord" id="freeWord"><br>
-			<!--<input type="submit" value="検索" id="search"><br>-->
 			<input type="button" value="検索" onClick="search()">
-		</p>
-		<!--</form>-->
-		<p>
+		</div>
+		<div id="searchResult">
 			<h2>↓検索結果</h2>
-			求人ID：<br>
-			企業ID：<br>
-			求人名：<br>
-			業種ID：<br>
-			業種：<br>
-			職種ID：<br>
-			職種：<br>
-			キャッチコピー：<br>
-			概要：<br>
-		</p>
-		<div id="result">
-		<p>結果：</p>
+			<table border="1">
+				<tr>
+					<th>求人ID：</th>
+					<td>xxx</td>
+					<th>企業ID：</th>
+					<td>xxx</td>
+				</tr>
+				<tr>
+					<th>求人名：</th>
+					<td colspan="3">xxxxxx</td>
+				</tr>
+				<tr>
+					<th>業種ID：</th>
+					<td>xxx</td>
+					<th>業種：</th>
+					<td>xxx</td>
+				</tr>
+				<tr>
+					<th>職種ID：</th>
+					<td>xxx</td>
+					<th>職種：</th>
+					<td>xxx</td>
+				</tr>
+				<tr>
+					<th>キャッチコピー：</th>
+					<td colspan="3">xxxxxxxxxx</td>
+				</tr>
+				<tr>
+					<th>概要：</th>
+					<td colspan="3">xxxxxxxxxx</td>
+				</tr>
+			</table>
 		</div>
 	</body>
 </html>

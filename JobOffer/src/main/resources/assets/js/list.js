@@ -27,11 +27,21 @@ function Request(Url, Method, oTypeId, iTypeId, fWord, CallbackFunc, ErrorCallba
 			freeWord: fWord
 		}, 
 		beforeSend: function () {
-        	alert("実行前");
+        	// 実行前に検索結果の表示を消去する
+        	$("#searchResult").empty();
     	}
 	}).done(function(data) {
         window.alert("成功");
-        $("#result").append(data.occupationTypeId);
+        $.each(data, function(i, jobOfferInfo) {
+        	$("#searchResult").append("<table>");
+        	$("#searchResult").append("<tr>");
+        	$("#searchResult").append("<th>業種ID：</th>");
+        	$("#searchResult").append("<td>" + jobOfferInfo.industryTypeId + "</td>");
+        	$("#searchResult").append("<th>職種ID：</th>");
+        	$("#searchResult").append("<td>" + jobOfferInfo.occupationTypeId + "</td>");
+        	$("#searchResult").append("</tr>");
+        	$("#searchResult").append("</table>");
+        });
         
 	}).fail(function(data) {
         window.alert("失敗");

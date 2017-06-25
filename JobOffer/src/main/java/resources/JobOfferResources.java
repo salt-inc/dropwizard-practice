@@ -1,12 +1,16 @@
 package resources;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import dto.SearchResponse;
+import core.JobOffer;
+import dao.JobOfferDao;
+import io.dropwizard.hibernate.UnitOfWork;
 
 /**
  * Resourceクラス。
@@ -15,6 +19,12 @@ import dto.SearchResponse;
  */
 @Path("/list")
 public class JobOfferResources {
+	
+	private final JobOfferDao dao;
+	
+	public JobOfferResources(JobOfferDao dao) {
+		this.dao = dao;
+	}
 	
 	/**
 	 * 検索処理を行い、結果を返すメソッド。（GET）
@@ -27,12 +37,13 @@ public class JobOfferResources {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public SearchResponse search(
+	@UnitOfWork
+	public List<JobOffer> search(
 			@QueryParam("industryTypeId") String industryTypeId, 
 			@QueryParam("occupationTypeId") String occupationTypeId, 
 			@QueryParam("freeWord") String freeWord) {
 		
-		return new SearchResponse(industryTypeId, occupationTypeId, freeWord);
+		return dao.getSearchResult(industryTypeId, occupationTypeId, freeWord);
 		
 	}
 

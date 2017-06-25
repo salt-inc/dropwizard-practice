@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.dropwizard.Configuration;
 import io.dropwizard.client.HttpClientConfiguration;
+import io.dropwizard.db.DataSourceFactory;
 
 public class JobOfferConfiguration extends Configuration {
 	
@@ -22,6 +23,11 @@ public class JobOfferConfiguration extends Configuration {
 	@Valid
 	@NotNull
 	private HttpClientConfiguration httpClient = new HttpClientConfiguration();
+	
+	@Valid
+	@NotNull
+	@JsonProperty("database")
+	private DataSourceFactory database = new DataSourceFactory();
 
 	@JsonProperty
 	public String getIndustryTypeId() {
@@ -63,6 +69,14 @@ public class JobOfferConfiguration extends Configuration {
 	@JsonProperty("httpClient")
     public void setHttpClientConfiguration(HttpClientConfiguration httpClient) {
         this.httpClient = httpClient;
+    }
+	
+	public DataSourceFactory getDataSourceFactory() {
+        return database;
+    }
+	
+    public void setDataSourceFactory(DataSourceFactory dataSourceFactory) {
+        this.database = dataSourceFactory;
     }
 
 }
