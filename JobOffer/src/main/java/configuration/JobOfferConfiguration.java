@@ -26,7 +26,6 @@ public class JobOfferConfiguration extends Configuration {
 	
 	@Valid
 	@NotNull
-	@JsonProperty("database")
 	private DataSourceFactory database = new DataSourceFactory();
 
 	@JsonProperty
@@ -71,6 +70,7 @@ public class JobOfferConfiguration extends Configuration {
         this.httpClient = httpClient;
     }
 	
+	@JsonProperty("database")
 	public DataSourceFactory getDataSourceFactory() {
         return database;
     }

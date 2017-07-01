@@ -9,6 +9,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import core.JobOffer;
+import dao.IndustryTypeDao;
 import dao.JobOfferDao;
 import io.dropwizard.hibernate.UnitOfWork;
 
@@ -20,10 +21,13 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Path("/list")
 public class JobOfferResources {
 	
-	private final JobOfferDao dao;
+	private final JobOfferDao jobOfferDao;
 	
-	public JobOfferResources(JobOfferDao dao) {
-		this.dao = dao;
+	private final IndustryTypeDao industryTypeDao;
+	
+	public JobOfferResources(JobOfferDao jobOfferDao, IndustryTypeDao industryTypeDao) {
+		this.jobOfferDao = jobOfferDao;
+		this.industryTypeDao = industryTypeDao;
 	}
 	
 	/**
@@ -43,7 +47,7 @@ public class JobOfferResources {
 			@QueryParam("occupationTypeId") String occupationTypeId, 
 			@QueryParam("freeWord") String freeWord) {
 		
-		return dao.getSearchResult(industryTypeId, occupationTypeId, freeWord);
+		return jobOfferDao.getSearchResult(industryTypeId, occupationTypeId, freeWord);
 		
 	}
 

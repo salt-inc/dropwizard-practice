@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="001" author="Kazushige Yamaguchi">
+        <createTable tableName="JOB_OFFER">
+            <column name="jobOfferId" type="char(7)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="companyId" type="char(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jobOfferName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="industryTypeId" type="char(4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="occupationTypeId" type="char(2)">
+            	<constraints nullable="false"/>
+            </column>
+            <column name="catchCopy" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jobOfferOverview" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="INDUSTRY_TYPE">
+        	<column name="industryTypeId" type="char(4)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="industryTypeName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="OCCUPATION_TYPE">
+        	<column name="occupationTypeId" type="char(2)">
+            	<constraints nullable="false"/>
+            </column>
+            <column name="occupationTypeName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+    </changeSet>
+</databaseChangeLog>

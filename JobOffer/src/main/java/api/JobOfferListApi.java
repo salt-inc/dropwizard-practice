@@ -1,12 +1,16 @@
 package api;
 
 import configuration.JobOfferConfiguration;
+import core.IndustryType;
 import core.JobOffer;
+import core.OccupationType;
+import dao.IndustryTypeDao;
 import dao.JobOfferDao;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import resources.JobOfferResources;
@@ -20,19 +24,28 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 	
 	/** hibernate */
 	private final HibernateBundle<JobOfferConfiguration> hibernate =
-	        new HibernateBundle<JobOfferConfiguration>(JobOffer.class) {
+	        new HibernateBundle<JobOfferConfiguration>(JobOffer.class, IndustryType.class, OccupationType.class) {
 	            @Override
 	            public DataSourceFactory getDataSourceFactory(JobOfferConfiguration configuration) {
 	                return configuration.getDataSourceFactory();
 	            }
 	        };
 	
+	@Override
 	public void initialize(Bootstrap<JobOfferConfiguration> bootstrap) {
 		
 		// htmlファイルの読み込み
 		bootstrap.addBundle(new AssetsBundle("/assets/", "/list", "list.html"));
 		// javaScriptファイルの読み込み
 		bootstrap.addBundle(new AssetsBundle("/assets/js", "/js", null, "js"));
+		
+		// Migration
+		bootstrap.addBundle(new MigrationsBundle<JobOfferConfiguration>() {
+            @Override
+            public DataSourceFactory getDataSourceFactory(JobOfferConfiguration configuration) {
+                return configuration.getDataSourceFactory();
+            }
+        });
 		
 		bootstrap.addBundle(hibernate);
 		
@@ -42,11 +55,13 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 	public void run(JobOfferConfiguration configuration, Environment environment) throws Exception {
 		
 		// Daoクラスのインスタンスを生成
-		final JobOfferDao dao = new JobOfferDao(hibernate.getSessionFactory());
+		final JobOfferDao jobOfferDao = new JobOfferDao(hibernate.getSessionFactory());
+		
+		final IndustryTypeDao industryTypeDao = new IndustryTypeDao(hibernate.getSessionFactory());
 		
 		// Resourcesクラスのインスタンス生成
 		// JobOfferDaoクラスのインスタンスを渡す
-		final JobOfferResources resource = new JobOfferResources(dao);
+		final JobOfferResources resource = new JobOfferResources(jobOfferDao, industryTypeDao);
 		
 		// Resourcesクラスの登録
 		environment.jersey().register(resource);

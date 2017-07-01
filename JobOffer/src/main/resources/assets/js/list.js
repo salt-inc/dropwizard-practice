@@ -33,12 +33,15 @@ function Request(Url, Method, oTypeId, iTypeId, fWord, CallbackFunc, ErrorCallba
 	}).done(function(data) {
         window.alert("成功");
         $.each(data, function(i, jobOfferInfo) {
+        	console.log(JSON.stringify(jobOfferInfo[i]));
         	$("#searchResult").append("<table>");
         	$("#searchResult").append("<tr>");
         	$("#searchResult").append("<th>業種ID：</th>");
-        	$("#searchResult").append("<td>" + jobOfferInfo.industryTypeId + "</td>");
+        	$("#searchResult").append("<td>" + jobOfferInfo[i].industryTypeId + "</td>");
+        	$("#searchResult").append("<th>業種名：</th>");
+        	$("#searchResult").append("<td>" + jobOfferInfo[i].industryType.industryTypeName + "</td>");
         	$("#searchResult").append("<th>職種ID：</th>");
-        	$("#searchResult").append("<td>" + jobOfferInfo.occupationTypeId + "</td>");
+        	$("#searchResult").append("<td>" + jobOfferInfo[i].occupationTypeId + "</td>");
         	$("#searchResult").append("</tr>");
         	$("#searchResult").append("</table>");
         });
