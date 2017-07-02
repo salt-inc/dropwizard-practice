@@ -92,6 +92,10 @@ function showRegisterDialog(category) {
 		
 		getIndustry(url, "POST");
 		
+		url = "/api/v1/job/useJobOfferRegister/occupation";
+		
+		getOccupation(url, "POST");
+		
 		$("#jobOfferRegister").dialog({
 			
 		});
@@ -105,7 +109,6 @@ function showRegisterDialog(category) {
 }
 
 function jobOfferRegisterStart() {
-	window.alert("求人登録開始！");
 	
 	// 求人ID
 	var jobOfferId = $("#jobOfferIdRegister").val();
@@ -197,6 +200,25 @@ function getIndustry(Url, Method) {
         $.each(data, function(i, industryInfo) {
         	console.log(JSON.stringify(industryInfo));
         	$("#industryTypeIdRegister").append("<option value=" + industryInfo.industryTypeId + ">" + industryInfo.industryTypeName + "</option>");
+        });
+        
+	}).fail(function(data) {
+        window.alert("失敗");
+        
+	});
+}
+
+function getOccupation(Url, Method) {
+	$.ajax({
+		url: Url,
+		type: Method,
+		data: {
+			id : Method
+		} 
+	}).done(function(data) {
+        $.each(data, function(i, occupationInfo) {
+        	console.log(JSON.stringify(occupationInfo));
+        	$("#occupationTypeIdRegister").append("<option value=" + occupationInfo.occupationTypeId + ">" + occupationInfo.occupationTypeName + "</option>");
         });
         
 	}).fail(function(data) {
