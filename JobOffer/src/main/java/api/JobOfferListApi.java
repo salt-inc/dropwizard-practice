@@ -1,6 +1,7 @@
 package api;
 
 import configuration.JobOfferConfiguration;
+import core.Company;
 import core.IndustryType;
 import core.JobOffer;
 import core.OccupationType;
@@ -22,9 +23,14 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 		new JobOfferListApi().run(args);
 	}
 	
-	/** hibernate */
+	/** 
+	 * hibernate
+	 * 
+	 * Entityの登録を行う。
+	 */
 	private final HibernateBundle<JobOfferConfiguration> hibernate =
-	        new HibernateBundle<JobOfferConfiguration>(JobOffer.class, IndustryType.class, OccupationType.class) {
+	        new HibernateBundle<JobOfferConfiguration>(
+	        		JobOffer.class, IndustryType.class, OccupationType.class, Company.class) {
 	            @Override
 	            public DataSourceFactory getDataSourceFactory(JobOfferConfiguration configuration) {
 	                return configuration.getDataSourceFactory();

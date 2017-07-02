@@ -5,8 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -45,13 +43,16 @@ public class JobOffer implements Serializable {
 	@Column(name = "jobOfferId", nullable = false)
 	private String jobOfferId;
 	
-	/** 企業ID */
-	@Column(name = "companyId", nullable = false)
-	private String companyId;
-	
 	/** 求人名 */
 	@Column(name = "jobOfferName", nullable = false)
 	private String jobOfferName;
+	
+	/** 企業ID */
+//	@Column(name = "companyId", nullable = false)
+//	private String companyId;
+	@ManyToOne(targetEntity = Company.class, fetch = FetchType.LAZY)
+    @JoinColumn(name="companyId", referencedColumnName="companyId", insertable=false, updatable=false)
+    private Company company;
 	
 	/** 業種情報 */
 	@ManyToOne(targetEntity = IndustryType.class, fetch = FetchType.LAZY)
@@ -75,10 +76,10 @@ public class JobOffer implements Serializable {
 		
 	}
 	
-	public JobOffer(String jobOfferId, String companyId, String jobOfferName, IndustryType industryType, 
+	public JobOffer(String jobOfferId, Company company, String jobOfferName, IndustryType industryType, 
 			OccupationType occupationType, String catchCopy, String jobOfferOverview) {
 		this.jobOfferId = jobOfferId;
-		this.companyId = companyId;
+		this.company = company;
 		this.jobOfferName = jobOfferName;
 		this.industryType = industryType;
 		this.occupationType = occupationType;
@@ -94,12 +95,12 @@ public class JobOffer implements Serializable {
 		this.jobOfferId = jobOfferId;
 	}
 
-	public String getCompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	public String getJobOfferName() {

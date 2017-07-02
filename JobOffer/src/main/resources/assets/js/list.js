@@ -38,13 +38,15 @@ function Request(Url, Method, oTypeId, iTypeId, fWord, CallbackFunc, ErrorCallba
         	$(".jobOfferTable").append("<tr>");
         	$(".jobOfferTable").append("<th>求人ID：</th>");
         	$(".jobOfferTable").append("<td>" + jobOfferInfo.jobOfferId + "</td>");
-        	$(".jobOfferTable").append("<th>企業ID：</th>");
-        	$(".jobOfferTable").append("<td>" + jobOfferInfo.companyId + "</td>");
+        	$(".jobOfferTable").append("<th>求人名：</th>");
+        	$(".jobOfferTable").append("<td>" + jobOfferInfo.jobOfferName + "</td>");
         	$(".jobOfferTable").append("</tr>");
         	
         	$(".jobOfferTable").append("<tr>");
-        	$(".jobOfferTable").append("<th>求人名：</th>");
-        	$(".jobOfferTable").append("<td colspan=3>" + jobOfferInfo.jobOfferName + "</td>");
+        	$(".jobOfferTable").append("<th>企業ID：</th>");
+        	$(".jobOfferTable").append("<td>" + jobOfferInfo.company.companyId + "</td>");
+        	$(".jobOfferTable").append("<th>企業名：</th>");
+        	$(".jobOfferTable").append("<td>" + jobOfferInfo.company.companyName + "</td>");
         	$(".jobOfferTable").append("</tr>");
         	
         	$(".jobOfferTable").append("<tr>");

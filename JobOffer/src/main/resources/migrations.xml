@@ -65,4 +65,26 @@
     	
     </changeSet>
     
+    <changeSet id="3" author="Kazushige Yamaguchi">
+    
+    	<createTable tableName="COMPANY">
+        	<column name="companyId" type="char(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="companyName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <insert tableName="COMPANY">
+        	<column name="companyId" value="com1001" />
+        	<column name="companyName" value="株式会社テスト" />
+        </insert>
+        <insert tableName="COMPANY">
+        	<column name="companyId" value="com1002" />
+        	<column name="companyName" value="ソリューション株式会社" />
+        </insert>
+    
+    </changeSet>
+    
 </databaseChangeLog>
