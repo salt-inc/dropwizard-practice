@@ -84,29 +84,87 @@ function Request(Url, Method, oTypeId, iTypeId, fWord, CallbackFunc, ErrorCallba
 	
 }
 
-function showRegisterDialog() {
-	$("#corporationRegister").dialog({
+function showRegisterDialog(category) {
+
+	if (category == "jobOffer") {
+		$("#jobOfferRegister").dialog({
+			
+		});
 		
+	} else if (category == "corporation") {
+		$("#corporationRegister").dialog({
+			
+		});
+	}
+	
+}
+
+function jobOfferRegisterStart() {
+	window.alert("求人登録開始！");
+	
+	// 求人ID
+	var jobOfferId = $("#jobOfferIdRegister").val();
+	// 求人名
+	var jobOfferName = $("#jobOfferNameRegister").val();
+	// 企業ID
+	var corporationId = $("#jobOffer_corporationIdRegister").val();
+	// 業種ID
+	var industryTypeId = $("#industryTypeIdRegister").val();
+	// 職種ID
+	var occupationTypeId = $("#occupationTypeIdRegister").val();
+	// キャッチコピー
+	var catchCopy = $("#catchCopyRegister").val();
+	// 概要
+	var jobOfferOverview = $("#jobOfferOverviewRegister").val();
+	
+	var url = "/api/v1/job";
+	
+	// 登録メソッドを呼び出す
+	jobOfferRegister(url, "POST", jobOfferId, jobOfferName, corporationId, 
+		industryTypeId, occupationTypeId, catchCopy, jobOfferOverview);
+	
+}
+
+function jobOfferRegister(Url, Method, jOfferId, jOfferName, cId, 
+	iTypeId, oTypeId, cCopy, jOfferOverview) {
+	$.ajax({
+		url: Url,
+		type: Method,
+		data: {
+			jobOfferId: jOfferId, 
+			jobOfferName: jOfferName, 
+			corporationId: cId, 
+			industryTypeId: iTypeId, 
+			occupationTypeId: oTypeId, 
+			catchCopy: cCopy, 
+			jobOfferOverview: jOfferOverview
+		}
+	}).done(function(data) {
+        window.alert("成功");
+        
+	}).fail(function(data) {
+        window.alert("失敗");
+        
 	});
 }
 
-function registerStart() {
+function corporationRegisterStart() {
 	window.alert("登録開始！");
 	
 	// 企業ID
 	var corporationId = $("#corporationIdRegister").val();
 	
-	// 職種名
+	// 企業名
 	var corporationName = $("#corporationNameRegister").val();
 	
 	var url = "/api/v1/job/corporation";
 	
 	// 登録メソッドを呼び出す
-	register(url, "POST", corporationId, corporationName);
+	corporationRegister(url, "POST", corporationId, corporationName);
 	
 }
 
-function register(Url, Method, cTypeId, cTypeName) {
+function corporationRegister(Url, Method, cTypeId, cTypeName) {
 	$.ajax({
 		url: Url,
 		type: Method,

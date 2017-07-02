@@ -21,12 +21,24 @@
 			フリーワード検索：<input type="text" name="freeWord" id="freeWord"><br>
 			<input type="button" value="検索" onClick="search()">
 		</div>
-		<input type="button" value="業種登録" onClick="showRegisterDialog()">
-		<div id="companyRegister" title="登録項目入力" style="display:none;">
+		<input type="button" value="求人登録" onClick="showRegisterDialog('jobOffer')">
+		<div id="jobOfferRegister" title="登録項目入力" style="display:none;">
+			<p>求人登録ボタンが押下されました</p>
+			求人ID：<input type="text" name="jobOfferIdRegister" id="jobOfferIdRegister"><br>
+			求人名：<input type="text" name="jobOfferNameRegister" id="jobOfferNameRegister"><br>
+			企業ID：<input type="text" name="corporationIdRegister" id="jobOffer_corporationIdRegister"><br>
+			業種ID：<input type="text" name="industryTypeIdRegister" id="industryTypeIdRegister"><br>
+			職種ID：<input type="text" name="occupationTypeIdRegister" id="occupationTypeIdRegister"><br>
+			キャッチコピー：<input type="text" name="catchCopyRegister" id="catchCopyRegister"><br>
+			概要：<input type="text" name="jobOfferOverviewRegister" id="jobOfferOverviewRegister"><br>
+			<input type="button" value="登録" onClick="jobOfferRegisterStart()">
+		</div>
+		<input type="button" value="企業登録" onClick="showRegisterDialog('corporation')">
+		<div id="corporationRegister" title="登録項目入力" style="display:none;">
 			<p>企業登録ボタンが押下されました</p>
-			企業ID：<input type="text" name="companyIdRegister" id="companyIdRegister"><br>
-			企業名：<input type="text" name="companyNameRegister" id="companyNameRegister"><br>
-			<input type="button" value="登録" onClick="registerStart()">
+			企業ID：<input type="text" name="corporationIdRegister" id="corporationIdRegister"><br>
+			企業名：<input type="text" name="corporationNameRegister" id="corporationNameRegister"><br>
+			<input type="button" value="登録" onClick="corporationRegisterStart()">
 		</div>
 		<h2>検索結果</h2>
 		<div id="searchResult">

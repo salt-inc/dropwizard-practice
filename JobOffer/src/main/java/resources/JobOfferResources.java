@@ -59,7 +59,25 @@ public class JobOfferResources {
 	
 	@POST
 	@Path("/job")
-	public void occupationTypeRegist() {
+	@UnitOfWork
+	@Produces(MediaType.APPLICATION_JSON)
+	public JobOffer jobOfferRegister(
+			@FormParam("jobOfferId") String jobOfferId, 
+			@FormParam("corporationId") String corporationId, 
+			@FormParam("jobOfferName") String jobOfferName, 
+			@FormParam("industryTypeId") String industryTypeId, 
+			@FormParam("occupationTypeId") String occupationTypeId, 
+			@FormParam("catchCopy") String catchCopy, 
+			@FormParam("jobOfferOverview") String jobOfferOverview) {
+		
+		System.out.println("jobOfferRegister起動");
+		System.out.println(jobOfferId + ", " + corporationId + ", " + jobOfferName + ", " + industryTypeId + ", " + 
+				occupationTypeId + ", " + catchCopy + ", " + jobOfferOverview);
+		
+		JobOffer jobOffer = jobOfferDao.create(jobOfferId, corporationId, jobOfferName, industryTypeId, 
+				occupationTypeId, catchCopy, jobOfferOverview);
+		
+		return jobOffer;
 		
 	}
 	
@@ -69,8 +87,6 @@ public class JobOfferResources {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Corporation corporationRegist(@FormParam("corporationId") String corporationId, 
 			@FormParam("corporationName") String corporationName) {
-		
-		System.out.println("corporationRegist起動");
 		
 		Corporation corporation = corporationDao.create(corporationId, corporationName);
 		
