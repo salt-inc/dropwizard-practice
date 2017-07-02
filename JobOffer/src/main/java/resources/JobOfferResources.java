@@ -11,9 +11,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import core.Corporation;
+import core.IndustryType;
 import core.JobOffer;
+import core.OccupationType;
 import dao.CorporationDao;
+import dao.IndustryTypeDao;
 import dao.JobOfferDao;
+import dao.OccupationTypeDao;
 import io.dropwizard.hibernate.UnitOfWork;
 
 /**
@@ -28,9 +32,16 @@ public class JobOfferResources {
 	
 	private final CorporationDao corporationDao;
 	
-	public JobOfferResources(JobOfferDao jobOfferDao, CorporationDao corporationDao) {
+	private final IndustryTypeDao industryTypeDao;
+	
+	private final OccupationTypeDao occupationTypeDao;
+	
+	public JobOfferResources(JobOfferDao jobOfferDao, CorporationDao corporationDao, 
+			IndustryTypeDao industryTypeDao, OccupationTypeDao occupationTypeDao) {
 		this.jobOfferDao = jobOfferDao;
 		this.corporationDao = corporationDao;
+		this.industryTypeDao = industryTypeDao;
+		this.occupationTypeDao = occupationTypeDao;
 	}
 	
 	/**
@@ -70,10 +81,6 @@ public class JobOfferResources {
 			@FormParam("catchCopy") String catchCopy, 
 			@FormParam("jobOfferOverview") String jobOfferOverview) {
 		
-		System.out.println("jobOfferRegister起動");
-		System.out.println(jobOfferId + ", " + corporationId + ", " + jobOfferName + ", " + industryTypeId + ", " + 
-				occupationTypeId + ", " + catchCopy + ", " + jobOfferOverview);
-		
 		JobOffer jobOffer = jobOfferDao.create(jobOfferId, corporationId, jobOfferName, industryTypeId, 
 				occupationTypeId, catchCopy, jobOfferOverview);
 		
@@ -91,6 +98,28 @@ public class JobOfferResources {
 		Corporation corporation = corporationDao.create(corporationId, corporationName);
 		
 		return corporation;
+	}
+	
+	@POST
+	@Path("/job/useJobOfferRegister/industry")
+	@UnitOfWork
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<IndustryType> getAllIndustryType() {
+		
+		List<IndustryType> IndustryTypeList = industryTypeDao.getAllIndustryType();
+		
+		return IndustryTypeList;
+	}
+	
+	@POST
+	@Path("/job/useJobOfferRegister/occupation")
+	@UnitOfWork
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<OccupationType> getAllOccupationType() {
+		
+		List<OccupationType> OccupationTypeList = occupationTypeDao.getAllOccupationType();
+		
+		return OccupationTypeList;
 	}
 
 }

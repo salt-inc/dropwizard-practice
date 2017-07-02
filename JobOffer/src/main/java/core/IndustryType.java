@@ -5,10 +5,21 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "INDUSTRY_TYPE")
+@NamedQueries(
+	    {
+	        @NamedQuery(
+	            name = "core.IndustryType.getAll",
+	            query = "SELECT industry "
+	            		+ "FROM IndustryType industry "
+	        )
+	    }
+	)
 public class IndustryType implements Serializable {
 	
 	/** 業種ID */

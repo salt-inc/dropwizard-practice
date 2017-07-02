@@ -5,10 +5,21 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "OCCUPATION_TYPE")
+@NamedQueries(
+	    {
+	        @NamedQuery(
+	            name = "core.OccupationType.getAll",
+	            query = "SELECT occupation "
+	            		+ "FROM OccupationType occupation "
+	        )
+	    }
+	)
 public class OccupationType implements Serializable {
 	
 	/** 職種ID */

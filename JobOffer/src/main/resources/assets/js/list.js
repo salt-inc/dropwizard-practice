@@ -87,6 +87,11 @@ function Request(Url, Method, oTypeId, iTypeId, fWord, CallbackFunc, ErrorCallba
 function showRegisterDialog(category) {
 
 	if (category == "jobOffer") {
+	
+		var url = "/api/v1/job/useJobOfferRegister/industry";
+		
+		getIndustry(url, "POST");
+		
 		$("#jobOfferRegister").dialog({
 			
 		});
@@ -181,3 +186,21 @@ function corporationRegister(Url, Method, cTypeId, cTypeName) {
 	});
 }
 
+function getIndustry(Url, Method) {
+	$.ajax({
+		url: Url,
+		type: Method,
+		data: {
+			id : Method
+		} 
+	}).done(function(data) {
+        $.each(data, function(i, industryInfo) {
+        	console.log(JSON.stringify(industryInfo));
+        	$("#industryTypeIdRegister").append("<option value=" + industryInfo.industryTypeId + ">" + industryInfo.industryTypeName + "</option>");
+        });
+        
+	}).fail(function(data) {
+        window.alert("失敗");
+        
+	});
+}
