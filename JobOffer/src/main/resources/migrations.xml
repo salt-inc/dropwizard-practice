@@ -8,31 +8,31 @@
 
     <changeSet id="001" author="Kazushige Yamaguchi">
         <createTable tableName="JOB_OFFER">
-            <column name="jobOfferId" type="char(7)">
+            <column name="jobOfferId" type="char(10)">
                 <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="companyId" type="char(7)">
-                <constraints nullable="false"/>
             </column>
             <column name="jobOfferName" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="industryTypeId" type="char(4)">
+            <column name="corporationId" type="char(10)">
                 <constraints nullable="false"/>
             </column>
-            <column name="occupationTypeId" type="char(2)">
+            <column name="industryTypeId" type="char(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="occupationTypeId" type="char(6)">
             	<constraints nullable="false"/>
             </column>
             <column name="catchCopy" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="jobOfferOverview" type="varchar(255)">
-                <constraints nullable="false"/>
+            <column name="jobOfferOverview" type="varchar(500)">
+            	<constraints nullable="false"/>
             </column>
         </createTable>
         
         <createTable tableName="INDUSTRY_TYPE">
-        	<column name="industryTypeId" type="char(4)">
+        	<column name="industryTypeId" type="char(6)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="industryTypeName" type="varchar(255)">
@@ -41,7 +41,7 @@
         </createTable>
         
         <createTable tableName="OCCUPATION_TYPE">
-        	<column name="occupationTypeId" type="char(2)">
+        	<column name="occupationTypeId" type="char(6)">
             	<constraints nullable="false"/>
             </column>
             <column name="occupationTypeName" type="varchar(255)">
@@ -53,36 +53,66 @@
     
     <changeSet id="2" author="Kazushige Yamaguchi">
     
+    	<insert tableName="JOB_OFFER">
+    		<column name="jobOfferId" value="job1000001" />
+     		<column name="corporationId" value="cor1000001" />
+      		<column name="jobOfferName" value="テスト求人１" />
+      		<column name="industryTypeId" value="in1001" />
+      		<column name="occupationTypeId" value="oc1001" />
+      		<column name="catchCopy" value="テストキャッチコピー１" />
+      		<column name="jobOfferOverview" value="テスト概要２" />
+    	</insert>
+    	
         <insert tableName="JOB_OFFER">
-    		<column name="jobOfferId" value="job1002" />
-     		<column name="companyId" value="com1002" />
-      		<column name="jobOfferName" value="ソリューション株式会社" />
-      		<column name="industryTypeId" value="in02" />
-      		<column name="occupationTypeId" value="o2" />
+    		<column name="jobOfferId" value="job1000002" />
+     		<column name="corporationId" value="cor1000002" />
+      		<column name="jobOfferName" value="IT業界でトップをつかもう！" />
+      		<column name="industryTypeId" value="in1002" />
+      		<column name="occupationTypeId" value="oc1002" />
       		<column name="catchCopy" value="IT業界のパイオニア" />
-      		<column name="jobOfferOverview" value="正社員募集。未経験からベテランまで歓迎" />
+      		<column name="jobOfferOverview" value="正社員募集。未経験からベテランまで歓迎！" />
+    	</insert>
+    	
+    	<insert tableName="INDUSTRY_TYPE">
+    		<column name="industryTypeId" value="in1001" />
+    		<column name="industryTypeName" value="テスト業種１" />
+    	</insert>
+    	
+    	<insert tableName="INDUSTRY_TYPE">
+    		<column name="industryTypeId" value="in1002" />
+    		<column name="industryTypeName" value="IT" />
+    	</insert>
+    	
+    	<insert tableName="OCCUPATION_TYPE">
+    		<column name="occupationTypeId" value="oc1001" />
+    		<column name="occupationTypeName" value="テスト職種１" />
+    	</insert>
+    	
+    	<insert tableName="OCCUPATION_TYPE">
+    		<column name="occupationTypeId" value="oc1002" />
+    		<column name="occupationTypeName" value="システムエンジニア" />
     	</insert>
     	
     </changeSet>
     
     <changeSet id="3" author="Kazushige Yamaguchi">
     
-    	<createTable tableName="COMPANY">
-        	<column name="companyId" type="char(7)">
+    	<createTable tableName="CORPORATION">
+        	<column name="corporationId" type="char(10)">
                 <constraints nullable="false"/>
             </column>
-            <column name="companyName" type="varchar(255)">
+            <column name="corporationName" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
         
-        <insert tableName="COMPANY">
-        	<column name="companyId" value="com1001" />
-        	<column name="companyName" value="株式会社テスト" />
+        <insert tableName="CORPORATION">
+        	<column name="corporationId" value="cor1000001" />
+        	<column name="corporationName" value="株式会社テスト" />
         </insert>
-        <insert tableName="COMPANY">
-        	<column name="companyId" value="com1002" />
-        	<column name="companyName" value="ソリューション株式会社" />
+        <insert tableName="CORPORATION">
+        	<column name="corporationId" value="cor1000002" />
+        	<column name="corporationName" value="ソリューション株式会社" />
         </insert>
     
     </changeSet>

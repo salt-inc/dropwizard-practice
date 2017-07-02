@@ -1,11 +1,11 @@
 package api;
 
 import configuration.JobOfferConfiguration;
-import core.Company;
+import core.Corporation;
 import core.IndustryType;
 import core.JobOffer;
 import core.OccupationType;
-import dao.IndustryTypeDao;
+import dao.CorporationDao;
 import dao.JobOfferDao;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -30,7 +30,7 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 	 */
 	private final HibernateBundle<JobOfferConfiguration> hibernate =
 	        new HibernateBundle<JobOfferConfiguration>(
-	        		JobOffer.class, IndustryType.class, OccupationType.class, Company.class) {
+	        		JobOffer.class, IndustryType.class, OccupationType.class, Corporation.class) {
 	            @Override
 	            public DataSourceFactory getDataSourceFactory(JobOfferConfiguration configuration) {
 	                return configuration.getDataSourceFactory();
@@ -65,7 +65,7 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 		// Daoクラスのインスタンスを生成
 		final JobOfferDao jobOfferDao = new JobOfferDao(hibernate.getSessionFactory());
 		
-		final IndustryTypeDao industryTypeDao = new IndustryTypeDao(hibernate.getSessionFactory());
+		final CorporationDao industryTypeDao = new CorporationDao(hibernate.getSessionFactory());
 		
 		// Resourcesクラスのインスタンス生成
 		// JobOfferDaoクラスのインスタンスを渡す

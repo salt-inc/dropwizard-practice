@@ -44,9 +44,9 @@ function Request(Url, Method, oTypeId, iTypeId, fWord, CallbackFunc, ErrorCallba
         	
         	$(".jobOfferTable").append("<tr>");
         	$(".jobOfferTable").append("<th>企業ID：</th>");
-        	$(".jobOfferTable").append("<td>" + jobOfferInfo.company.companyId + "</td>");
+        	$(".jobOfferTable").append("<td>" + jobOfferInfo.corporation.corporationId + "</td>");
         	$(".jobOfferTable").append("<th>企業名：</th>");
-        	$(".jobOfferTable").append("<td>" + jobOfferInfo.company.companyName + "</td>");
+        	$(".jobOfferTable").append("<td>" + jobOfferInfo.corporation.corporationName + "</td>");
         	$(".jobOfferTable").append("</tr>");
         	
         	$(".jobOfferTable").append("<tr>");
@@ -85,7 +85,7 @@ function Request(Url, Method, oTypeId, iTypeId, fWord, CallbackFunc, ErrorCallba
 }
 
 function showRegisterDialog() {
-	$("#industryInfoRegister").dialog({
+	$("#corporationRegister").dialog({
 		
 	});
 }
@@ -93,26 +93,26 @@ function showRegisterDialog() {
 function registerStart() {
 	window.alert("登録開始！");
 	
-	// 業種ID
-	var industryTypeId = $("#industryTypeIdRegister").val();
+	// 企業ID
+	var corporationId = $("#corporationIdRegister").val();
 	
 	// 職種名
-	var industryTypeName = $("#industryTypeNameRegister").val();
+	var corporationName = $("#corporationNameRegister").val();
 	
-	var url = "/api/v1/job";
+	var url = "/api/v1/job/corporation";
 	
 	// 登録メソッドを呼び出す
-	register(url, "POST", industryTypeId, industryTypeName);
+	register(url, "POST", corporationId, corporationName);
 	
 }
 
-function register(Url, Method, iTypeId, iTypeName) {
+function register(Url, Method, cTypeId, cTypeName) {
 	$.ajax({
 		url: Url,
 		type: Method,
 		data: {
-			industryTypeId: iTypeId, 
-			industryTypeName: iTypeName 
+			corporationId: cTypeId, 
+			corporationName: cTypeName 
 		} 
 	}).done(function(data) {
         window.alert("成功");

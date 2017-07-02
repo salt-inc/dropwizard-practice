@@ -4,10 +4,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 
-import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 
-import core.IndustryType;
+import core.Corporation;
 import io.dropwizard.hibernate.AbstractDAO;
 
 /**
@@ -16,13 +15,13 @@ import io.dropwizard.hibernate.AbstractDAO;
  * @author kazu
  *
  */
-public class IndustryTypeDao extends AbstractDAO<IndustryType> {
+public class CorporationDao extends AbstractDAO<Corporation> {
 
-	public IndustryTypeDao(SessionFactory factory) {
+	public CorporationDao(SessionFactory factory) {
 		super(factory);
 	}
 	
-	public Optional<IndustryType> findById(Long id) {
+	public Optional<Corporation> findById(Long id) {
         return Optional.ofNullable(get(id));
     }
 	
@@ -31,12 +30,12 @@ public class IndustryTypeDao extends AbstractDAO<IndustryType> {
      * 
      * @return 検索条件に当てはまる求人情報リスト
      */
-	public IndustryType create(String industryTypeId, String industryTypeName) {
+	public Corporation create(String companyId, String companyName) {
 		
-		IndustryType industryType = new IndustryType(industryTypeId, industryTypeName);
-		currentSession().save(requireNonNull(industryType));
+		Corporation company = new Corporation(companyId, companyName);
+		currentSession().save(requireNonNull(company));
 		
-		return industryType;
+		return company;
     }
 
 }

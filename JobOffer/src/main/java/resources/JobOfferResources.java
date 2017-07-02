@@ -10,9 +10,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import core.IndustryType;
+import core.Corporation;
 import core.JobOffer;
-import dao.IndustryTypeDao;
+import dao.CorporationDao;
 import dao.JobOfferDao;
 import io.dropwizard.hibernate.UnitOfWork;
 
@@ -26,11 +26,11 @@ public class JobOfferResources {
 	
 	private final JobOfferDao jobOfferDao;
 	
-	private final IndustryTypeDao industryTypeDao;
+	private final CorporationDao corporationDao;
 	
-	public JobOfferResources(JobOfferDao jobOfferDao, IndustryTypeDao industryTypeDao) {
+	public JobOfferResources(JobOfferDao jobOfferDao, CorporationDao corporationDao) {
 		this.jobOfferDao = jobOfferDao;
-		this.industryTypeDao = industryTypeDao;
+		this.corporationDao = corporationDao;
 	}
 	
 	/**
@@ -59,20 +59,22 @@ public class JobOfferResources {
 	
 	@POST
 	@Path("/job")
-	@UnitOfWork
-	@Produces(MediaType.APPLICATION_JSON)
-	public IndustryType industryTypeRegist(@FormParam("industryTypeId") String industryTypeId, 
-			@FormParam("industryTypeName") String industryTypeName) {
+	public void occupationTypeRegist() {
 		
-		IndustryType industryType = industryTypeDao.create(industryTypeId, industryTypeName);
-		
-		return industryType;
 	}
 	
 	@POST
 	@Path("/job/corporation")
-	public void occupationTypeRegist() {
+	@UnitOfWork
+	@Produces(MediaType.APPLICATION_JSON)
+	public Corporation corporationRegist(@FormParam("corporationId") String corporationId, 
+			@FormParam("corporationName") String corporationName) {
 		
+		System.out.println("corporationRegist起動");
+		
+		Corporation corporation = corporationDao.create(corporationId, corporationName);
+		
+		return corporation;
 	}
 
 }

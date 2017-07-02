@@ -48,11 +48,9 @@ public class JobOffer implements Serializable {
 	private String jobOfferName;
 	
 	/** 企業ID */
-//	@Column(name = "companyId", nullable = false)
-//	private String companyId;
-	@ManyToOne(targetEntity = Company.class, fetch = FetchType.LAZY)
-    @JoinColumn(name="companyId", referencedColumnName="companyId", insertable=false, updatable=false)
-    private Company company;
+	@ManyToOne(targetEntity = Corporation.class, fetch = FetchType.LAZY)
+    @JoinColumn(name="corporationId", referencedColumnName="corporationId", insertable=false, updatable=false)
+    private Corporation corporation;
 	
 	/** 業種情報 */
 	@ManyToOne(targetEntity = IndustryType.class, fetch = FetchType.LAZY)
@@ -76,10 +74,10 @@ public class JobOffer implements Serializable {
 		
 	}
 	
-	public JobOffer(String jobOfferId, Company company, String jobOfferName, IndustryType industryType, 
+	public JobOffer(String jobOfferId, Corporation corporation, String jobOfferName, IndustryType industryType, 
 			OccupationType occupationType, String catchCopy, String jobOfferOverview) {
 		this.jobOfferId = jobOfferId;
-		this.company = company;
+		this.corporation = corporation;
 		this.jobOfferName = jobOfferName;
 		this.industryType = industryType;
 		this.occupationType = occupationType;
@@ -95,12 +93,12 @@ public class JobOffer implements Serializable {
 		this.jobOfferId = jobOfferId;
 	}
 
-	public Company getCompany() {
-		return company;
+	public Corporation getcorporation() {
+		return corporation;
 	}
 
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setcorporation(Corporation corporation) {
+		this.corporation = corporation;
 	}
 
 	public String getJobOfferName() {
