@@ -41,15 +41,11 @@ public class JobOfferDao extends AbstractDAO<JobOffer> {
 		// クエリの取得
 		Query query = namedQuery("core.JobOffer.searchResult");
 		
-		System.out.println("クエリのパラメータ設定");
-		
 		// クエリのパラメータを設定
 		query.setParameter("industryTypeId", industryTypeId);
 		query.setParameter("occupationTypeId", occupationTypeId);
 		
-		System.out.println("クエリのパラメータ設定完了");
-		
-        return list(query);
+		return list(query);
     }
 
 }

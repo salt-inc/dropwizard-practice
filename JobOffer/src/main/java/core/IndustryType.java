@@ -1,38 +1,22 @@
 package core;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "INDUSTRY_TYPE")
-@NamedQueries(
-	    {
-	        @NamedQuery(
-	            name = "core.IndustryType.searchResult",
-	            query = "SELECT industry "
-	            		+ "FROM IndustryType industry "
-	            		+ "WHERE "
-	            		+ "industry.industryTypeId = :industryTypeId "
-	        )
-	    }
-	)
 public class IndustryType implements Serializable {
 	
 	/** 業種ID */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "industryTypeId", nullable = false)
 	private String industryTypeId;
 	
@@ -40,9 +24,15 @@ public class IndustryType implements Serializable {
 	@Column(name = "industryTypeName", nullable = false)
 	private String industryTypeName;
 	
-//	@OneToMany(mappedBy="industryType", fetch = FetchType.LAZY)
-//	@JoinColumn(name="industryTypeId")
-//	private List<JobOffer> jobOfferList;
+	// デフォルトコンストラクタは必須！
+	public IndustryType() {
+		
+	}
+	
+	public IndustryType(String industryTypeId, String industryTypeName) {
+		this.industryTypeId = industryTypeId;
+		this.industryTypeName = industryTypeName;
+	}
 	
 	public String getIndustryTypeId() {
 		return industryTypeId;

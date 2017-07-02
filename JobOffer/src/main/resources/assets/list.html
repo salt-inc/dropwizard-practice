@@ -6,51 +6,31 @@
 		<meta name="author" content="Kazushige Yamaguchi">
 		<title>求人一覧画面</title>
 		<script type="text/javascript" src="js/list.js"></script>
-		<script src="js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/list.css">
 	</head>
 	
 	<body>
 		<h1>求人一覧</h1>
 		<div id="searchBox">
 			<h2>検索</h2>
-			職種ID：<input type="text" name="occupationTypeId" id="occupationTypeId"><br>
+			職種ID：<input type="text" name="occupationTypeId" id="occupationTypeId">
 			業種ID：<input type="text" name="industryTypeId" id="industryTypeId"><br>
 			フリーワード検索：<input type="text" name="freeWord" id="freeWord"><br>
 			<input type="button" value="検索" onClick="search()">
 		</div>
+		<input type="button" value="業種登録" onClick="showRegisterDialog()">
+		<div id="industryInfoRegister" title="登録項目入力" style="display:none;">
+			<p>業種登録ボタンが押下されました</p>
+			業種ID：<input type="text" name="industryTypeIdRegister" id="industryTypeIdRegister"><br>
+			業種名：<input type="text" name="industryTypeNameRegister" id="industryTypeNameRegister"><br>
+			<input type="button" value="登録" onClick="registerStart()">
+		</div>
+		<h2>検索結果</h2>
 		<div id="searchResult">
-			<h2>↓検索結果</h2>
-			<table border="1">
-				<tr>
-					<th>求人ID：</th>
-					<td>xxx</td>
-					<th>企業ID：</th>
-					<td>xxx</td>
-				</tr>
-				<tr>
-					<th>求人名：</th>
-					<td colspan="3">xxxxxx</td>
-				</tr>
-				<tr>
-					<th>業種ID：</th>
-					<td>xxx</td>
-					<th>業種：</th>
-					<td>xxx</td>
-				</tr>
-				<tr>
-					<th>職種ID：</th>
-					<td>xxx</td>
-					<th>職種：</th>
-					<td>xxx</td>
-				</tr>
-				<tr>
-					<th>キャッチコピー：</th>
-					<td colspan="3">xxxxxxxxxx</td>
-				</tr>
-				<tr>
-					<th>概要：</th>
-					<td colspan="3">xxxxxxxxxx</td>
-				</tr>
+			<table class="jobOfferTable">
 			</table>
 		</div>
 	</body>

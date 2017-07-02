@@ -2,12 +2,15 @@ package resources;
 
 import java.util.List;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import core.IndustryType;
 import core.JobOffer;
 import dao.IndustryTypeDao;
 import dao.JobOfferDao;
@@ -18,7 +21,7 @@ import io.dropwizard.hibernate.UnitOfWork;
  * 
  * @author Kazushige Yamaguchi
  */
-@Path("/list")
+@Path("/v1")
 public class JobOfferResources {
 	
 	private final JobOfferDao jobOfferDao;
@@ -40,6 +43,7 @@ public class JobOfferResources {
 	 * @return 検索結果
 	 */
 	@GET
+	@Path("/job/list")
 	@Produces(MediaType.APPLICATION_JSON)
 	@UnitOfWork
 	public List<JobOffer> search(
@@ -47,7 +51,27 @@ public class JobOfferResources {
 			@QueryParam("occupationTypeId") String occupationTypeId, 
 			@QueryParam("freeWord") String freeWord) {
 		
-		return jobOfferDao.getSearchResult(industryTypeId, occupationTypeId, freeWord);
+		List<JobOffer> jobOfferList = jobOfferDao.getSearchResult(industryTypeId, occupationTypeId, freeWord);
+		
+		return jobOfferList;
+		
+	}
+	
+	@POST
+	@Path("/job")
+	@UnitOfWork
+	@Produces(MediaType.APPLICATION_JSON)
+	public IndustryType industryTypeRegist(@FormParam("industryTypeId") String industryTypeId, 
+			@FormParam("industryTypeName") String industryTypeName) {
+		
+		IndustryType industryType = industryTypeDao.create(industryTypeId, industryTypeName);
+		
+		return industryType;
+	}
+	
+	@POST
+	@Path("/job/corporation")
+	public void occupationTypeRegist() {
 		
 	}
 

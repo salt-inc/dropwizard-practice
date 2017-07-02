@@ -50,4 +50,19 @@
         </createTable>
         
     </changeSet>
+    
+    <changeSet id="2" author="Kazushige Yamaguchi">
+    
+        <insert tableName="JOB_OFFER">
+    		<column name="jobOfferId" value="job1002" />
+     		<column name="companyId" value="com1002" />
+      		<column name="jobOfferName" value="ソリューション株式会社" />
+      		<column name="industryTypeId" value="in02" />
+      		<column name="occupationTypeId" value="o2" />
+      		<column name="catchCopy" value="IT業界のパイオニア" />
+      		<column name="jobOfferOverview" value="正社員募集。未経験からベテランまで歓迎" />
+    	</insert>
+    	
+    </changeSet>
+    
 </databaseChangeLog>

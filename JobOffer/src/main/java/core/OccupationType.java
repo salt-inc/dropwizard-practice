@@ -1,14 +1,12 @@
 package core;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -17,7 +15,6 @@ public class OccupationType implements Serializable {
 	
 	/** 職種ID */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "occupationTypeId", nullable = false)
 	private String occupationTypeId;
 	
@@ -25,9 +22,10 @@ public class OccupationType implements Serializable {
 	@Column(name = "occupationTypeName", nullable = false)
 	private String occupationTypeName;
 	
-//	@OneToMany(mappedBy="occupationType")
-//	@JoinColumn(name="occupationTypeId")
-//	private List<JobOffer> jobOfferList;
+	// デフォルトコンストラクタは必須！
+	public OccupationType() {
+		
+	}
 
 	public String getOccupationTypeId() {
 		return occupationTypeId;

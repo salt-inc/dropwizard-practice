@@ -35,9 +35,11 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 	public void initialize(Bootstrap<JobOfferConfiguration> bootstrap) {
 		
 		// htmlファイルの読み込み
-		bootstrap.addBundle(new AssetsBundle("/assets/", "/list", "list.html"));
+		bootstrap.addBundle(new AssetsBundle("/assets/", "/view/job/", "list.html"));
 		// javaScriptファイルの読み込み
 		bootstrap.addBundle(new AssetsBundle("/assets/js", "/js", null, "js"));
+		// cssファイルの読み込み
+		bootstrap.addBundle(new AssetsBundle("/assets/css", "/css", null, "css"));
 		
 		// Migration
 		bootstrap.addBundle(new MigrationsBundle<JobOfferConfiguration>() {

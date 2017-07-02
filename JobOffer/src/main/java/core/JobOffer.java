@@ -22,30 +22,18 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "JOB_OFFER")
-//@SecondaryTables(
-//		{
-//			@SecondaryTable(name = "INDUSTRY_TYPE", 
-//					pkJoinColumns=@PrimaryKeyJoinColumn(name="industryTypeId", referencedColumnName="industryTypeId")), 
-//			@SecondaryTable(name = "OCCUPATION_TYPE", 
-//					pkJoinColumns=@PrimaryKeyJoinColumn(name="occupationTypId", referencedColumnName="occupationTypeId"))
-//		}
-//		)
 @NamedQueries(
     {
         @NamedQuery(
             name = "core.JobOffer.searchResult",
-            query = "SELECT job, job.industryType.industryTypeName "
+            query = "SELECT job "
             		+ "FROM JobOffer job "
-//            		+ "INNER JOIN job.industryType ind "
-//            		+ "ON job.industryTypeId = ind.industryTypeId "
-//            		+ "INNER JOIN OCCUPATION_TYPE occupation "
-//            		+ "ON job.occupationTypeId = occupation.occupationTypeId "
             		+ "WHERE "
-            		+ "job.industryTypeId = "
-            		+ "CASE WHEN :industryTypeId = '' THEN job.industryTypeId "
+            		+ "job.industryType.industryTypeId = "
+            		+ "CASE WHEN :industryTypeId = '' THEN job.industryType.industryTypeId "
             		+ "ELSE :industryTypeId END "
-            		+ "AND job.occupationTypeId = "
-            		+ "CASE WHEN :occupationTypeId = '' THEN job.occupationTypeId "
+            		+ "AND job.occupationType.occupationTypeId = "
+            		+ "CASE WHEN :occupationTypeId = '' THEN job.occupationType.occupationTypeId "
             		+ "ELSE :occupationTypeId END "
         )
     }
@@ -54,31 +42,24 @@ public class JobOffer implements Serializable {
 	
 	/** 求人ID(pk) */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "jobOfferId", nullable = false)
 	private String jobOfferId;
 	
 	/** 企業ID */
 	@Column(name = "companyId", nullable = false)
-	private String company;
+	private String companyId;
 	
 	/** 求人名 */
 	@Column(name = "jobOfferName", nullable = false)
 	private String jobOfferName;
 	
-	/** 業種ID */
-	@Column(name = "industryTypeId", nullable = false)
-	private String industryTypeId;
-	
+	/** 業種情報 */
 	@ManyToOne(targetEntity = IndustryType.class, fetch = FetchType.LAZY)
     @JoinColumn(name="industryTypeId", referencedColumnName="industryTypeId", insertable=false, updatable=false)
     private IndustryType industryType;
 	
-	/** 職種ID */
-	@Column(name = "occupationTypeId", nullable = false)
-	private String occupationTypeId;
-	
-	@ManyToOne(targetEntity = OccupationType.class)
+	/** 職種情報 */
+	@ManyToOne(targetEntity = OccupationType.class, fetch = FetchType.LAZY)
     @JoinColumn(name="occupationTypeId", referencedColumnName="occupationTypeId", insertable=false, updatable=false)
     private OccupationType occupationType;
 	
@@ -94,15 +75,12 @@ public class JobOffer implements Serializable {
 		
 	}
 	
-	public JobOffer(String jobOfferId, String companyId, String jobOfferName, String industryTypeId, 
-			IndustryType industryType, String occupationTypeId, OccupationType occupationType, String catchCopy, 
-			String jobOfferOverview) {
+	public JobOffer(String jobOfferId, String companyId, String jobOfferName, IndustryType industryType, 
+			OccupationType occupationType, String catchCopy, String jobOfferOverview) {
 		this.jobOfferId = jobOfferId;
-		this.company = companyId;
+		this.companyId = companyId;
 		this.jobOfferName = jobOfferName;
-		this.industryTypeId = industryTypeId;
 		this.industryType = industryType;
-		this.occupationTypeId = occupationTypeId;
 		this.occupationType = occupationType;
 		this.catchCopy = catchCopy;
 		this.jobOfferOverview = jobOfferOverview;
@@ -116,12 +94,12 @@ public class JobOffer implements Serializable {
 		this.jobOfferId = jobOfferId;
 	}
 
-	public String getCompany() {
-		return company;
+	public String getCompanyId() {
+		return companyId;
 	}
 
-	public void setCompany(String company) {
-		this.company = company;
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
 	}
 
 	public String getJobOfferName() {
@@ -130,38 +108,6 @@ public class JobOffer implements Serializable {
 
 	public void setJobOfferName(String jobOfferName) {
 		this.jobOfferName = jobOfferName;
-	}
-
-	public String getIndustryTypeId() {
-		return industryTypeId;
-	}
-
-	public void setIndustryTypeId(String industryTypeId) {
-		this.industryTypeId = industryTypeId;
-	}
-
-	public String getOccupationTypeId() {
-		return occupationTypeId;
-	}
-
-	public void setOccupationTypeId(String occupationTypeId) {
-		this.occupationTypeId = occupationTypeId;
-	}
-
-	public String getCatchCopy() {
-		return catchCopy;
-	}
-
-	public void setCatchCopy(String catchCopy) {
-		this.catchCopy = catchCopy;
-	}
-
-	public String getJobOfferOverview() {
-		return jobOfferOverview;
-	}
-
-	public void setJobOfferOverview(String jobOfferOverview) {
-		this.jobOfferOverview = jobOfferOverview;
 	}
 
 	public IndustryType getIndustryType() {
@@ -178,6 +124,22 @@ public class JobOffer implements Serializable {
 
 	public void setOccupationType(OccupationType occupationType) {
 		this.occupationType = occupationType;
+	}
+
+	public String getCatchCopy() {
+		return catchCopy;
+	}
+
+	public void setCatchCopy(String catchCopy) {
+		this.catchCopy = catchCopy;
+	}
+
+	public String getJobOfferOverview() {
+		return jobOfferOverview;
+	}
+
+	public void setJobOfferOverview(String jobOfferOverview) {
+		this.jobOfferOverview = jobOfferOverview;
 	}
 
 }

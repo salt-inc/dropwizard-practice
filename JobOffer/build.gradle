@@ -18,9 +18,10 @@ dependencies {
     compile 'io.dropwizard:dropwizard-migrations:1.0.6'
     compile 'io.dropwizard:dropwizard-hibernate:1.0.6'
     
+    compile 'io.dropwizard:dropwizard-db:1.0.6'
+    
     compile 'org.mariadb.jdbc:mariadb-java-client:2.0.2'
     
-    compile group: 'javax.persistence', name: 'persistence-api', version: '1.0.2'
 }
 
 compileJava {
