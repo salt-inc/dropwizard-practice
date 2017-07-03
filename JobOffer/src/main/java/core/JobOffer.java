@@ -40,6 +40,7 @@ import javax.persistence.Table;
             		+ "OR job.corporation.corporationName LIKE :freeWord "
             		+ "OR job.catchCopy LIKE :freeWord "
             		+ "OR job.jobOfferOverview LIKE :freeWord) "
+            		+ "ORDER BY job.jobOfferId "
         )
     }
 )
