@@ -14,17 +14,13 @@ import io.dropwizard.hibernate.AbstractDAO;
 /**
  * 求人情報のDaoクラス
  * 
- * @author kazu
+ * @author Kazushige Yamaguchi
  *
  */
 public class JobOfferDao extends AbstractDAO<JobOffer> {
 
 	public JobOfferDao(SessionFactory factory) {
 		super(factory);
-	}
-	
-	public Optional<JobOffer> findById(Long id) {
-        return Optional.ofNullable(get(id));
 	}
 	
     /**
@@ -42,30 +38,33 @@ public class JobOfferDao extends AbstractDAO<JobOffer> {
 		query.setParameter("industryTypeId", industryTypeId);
 		query.setParameter("occupationTypeId", occupationTypeId);
 		
+		// フリーワードは部分一致検索なので、前後に%を追加
+		query.setParameter("freeWord", "%" + freeWord + "%");
+		
 		return list(query);
     }
 	
 	/**
 	 * 求人情報登録処理メソッド
 	 * 
-	 * @param jobOfferId
-	 * @param corporationId
-	 * @param jobOfferName
-	 * @param industryTypeId
-	 * @param occupationTypeId
-	 * @param catchCopy
-	 * @param jobOfferOverview
-	 * @return
+	 * @param jobOfferId 求人ID
+	 * @param corporationId 企業ID
+	 * @param jobOfferName 求人名
+	 * @param industryTypeId 業種ID
+	 * @param occupationTypeId 職種ID
+	 * @param catchCopy キャッチコピー
+	 * @param jobOfferOverview 求人概要
+	 * @return 求人情報
 	 */
 	public JobOffer create(String jobOfferId,String corporationId, String jobOfferName, String industryTypeId, 
 			String occupationTypeId, String catchCopy, String jobOfferOverview) {
 		
-		System.out.println("create_jobOffer起動");
+		// 登録処理用のコンストラクタを用いてインスタンスを生成
 		JobOffer jobOffer = new JobOffer(jobOfferId, corporationId, jobOfferName, industryTypeId, 
 				occupationTypeId, catchCopy, jobOfferOverview);
-		System.out.println("save開始");
+		
+		// 登録処理
 		currentSession().save(requireNonNull(jobOffer));
-		System.out.println("save完了");
 		
 		return jobOffer;
     }

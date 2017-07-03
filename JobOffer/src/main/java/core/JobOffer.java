@@ -35,6 +35,11 @@ import javax.persistence.Table;
             		+ "AND job.occupationType.occupationTypeId = "
             		+ "CASE WHEN :occupationTypeId = '' THEN job.occupationType.occupationTypeId "
             		+ "ELSE :occupationTypeId END "
+            		+ "AND "
+            		+ "(job.jobOfferName LIKE :freeWord "
+            		+ "OR job.corporation.corporationName LIKE :freeWord "
+            		+ "OR job.catchCopy LIKE :freeWord "
+            		+ "OR job.jobOfferOverview LIKE :freeWord) "
         )
     }
 )
@@ -84,6 +89,7 @@ public class JobOffer implements Serializable {
 	@Column(name = "jobOfferOverview", nullable = false)
 	private String jobOfferOverview;
 	
+	/** デフォルトコンストラクタ */
 	public JobOffer() {
 		
 	}

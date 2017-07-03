@@ -1,23 +1,23 @@
+// 検索処理メソッド
 function search() {
 
 	// 職種ID
 	var occupationTypeId = $("#occupationTypeId").val();
-	
 	// 業種ID
 	var industryTypeId = $("#industryTypeId").val();
-	
 	// フリーワード
 	var freeWord = $("#freeWord").val();
 	
+	// 検索処理用のurlを設定
 	var url = "/api/v1/job/list";
 	
-	// リクエストメソッドを呼び出す
-	Request(url, "GET", occupationTypeId, industryTypeId, freeWord, null, null);
+	// 検索実行メソッドを呼び出す
+	searchRun(url, "GET", occupationTypeId, industryTypeId, freeWord, null, null);
 }
 
-function Request(Url, Method, oTypeId, iTypeId, fWord, CallbackFunc, ErrorCallbackFunc) {
+// 検索実行メソッド
+function searchRun(Url, Method, oTypeId, iTypeId, fWord, CallbackFunc, ErrorCallbackFunc) {
 
-	window.alert("リクエストメソッド開始");
 	$.ajax({
 		url: Url,
 		type: Method,
@@ -31,9 +31,11 @@ function Request(Url, Method, oTypeId, iTypeId, fWord, CallbackFunc, ErrorCallba
         	$(".jobOfferTable").empty();
     	}
 	}).done(function(data) {
-        window.alert("成功");
+	
+		// 取得できたjsonの要素数分繰り返す
         $.each(data, function(i, jobOfferInfo) {
-        	console.log(JSON.stringify(jobOfferInfo));
+        	
+        	// 検索結果表示用のテーブルに、取得したjsonの要素を設定する
         	
         	$(".jobOfferTable").append("<tr>");
         	$(".jobOfferTable").append("<th>求人ID：</th>");
@@ -76,38 +78,41 @@ function Request(Url, Method, oTypeId, iTypeId, fWord, CallbackFunc, ErrorCallba
         });
         
 	}).fail(function(data) {
-        window.alert("失敗");
         
 	});
 	
+	// cssの適用
 	$('.jobOfferTable').addClass('jobOfferTable');
 	
 }
 
+// 登録内容の入力欄ダイアログを表示する
 function showRegisterDialog(category) {
 
+	// 求人情報登録の入力欄を表示する場合
 	if (category == "jobOffer") {
 	
+		// 業種情報を取得し、プルダウンに設定する
 		var url = "/api/v1/job/useJobOfferRegister/industry";
-		
 		getIndustry(url, "POST");
 		
+		// 職種情報を取得し、プルダウンに設定する
 		url = "/api/v1/job/useJobOfferRegister/occupation";
-		
 		getOccupation(url, "POST");
 		
-		$("#jobOfferRegister").dialog({
-			
-		});
+		// 求人情報登録ダイアログを表示
+		$("#jobOfferRegister").dialog({});
 		
+	// 企業情報登録の入力欄を表示する場合
 	} else if (category == "corporation") {
-		$("#corporationRegister").dialog({
-			
-		});
+		
+		// 企業情報登録ダイアログを表示
+		$("#corporationRegister").dialog({});
 	}
 	
 }
 
+// 求人情報登録開始メソッド
 function jobOfferRegisterStart() {
 	
 	// 求人ID
@@ -125,16 +130,19 @@ function jobOfferRegisterStart() {
 	// 概要
 	var jobOfferOverview = $("#jobOfferOverviewRegister").val();
 	
+	// 求人情報登録処理用のurlを設定
 	var url = "/api/v1/job";
 	
-	// 登録メソッドを呼び出す
+	// 求人情報登録メソッドを呼び出す
 	jobOfferRegister(url, "POST", jobOfferId, jobOfferName, corporationId, 
 		industryTypeId, occupationTypeId, catchCopy, jobOfferOverview);
 	
 }
 
+// 求人情報登録処理メソッド
 function jobOfferRegister(Url, Method, jOfferId, jOfferName, cId, 
 	iTypeId, oTypeId, cCopy, jOfferOverview) {
+	
 	$.ajax({
 		url: Url,
 		type: Method,
@@ -148,31 +156,31 @@ function jobOfferRegister(Url, Method, jOfferId, jOfferName, cId,
 			jobOfferOverview: jOfferOverview
 		}
 	}).done(function(data) {
-        window.alert("成功");
         
 	}).fail(function(data) {
-        window.alert("失敗");
-        
+		
 	});
 }
 
+// 企業情報登録開始メソッド
 function corporationRegisterStart() {
-	window.alert("登録開始！");
 	
 	// 企業ID
 	var corporationId = $("#corporationIdRegister").val();
-	
 	// 企業名
 	var corporationName = $("#corporationNameRegister").val();
 	
+	// 企業情報登録用のurlを設定
 	var url = "/api/v1/job/corporation";
 	
-	// 登録メソッドを呼び出す
+	// 企業情報登録メソッドを呼び出す
 	corporationRegister(url, "POST", corporationId, corporationName);
 	
 }
 
+// 企業情報登録処理メソッド
 function corporationRegister(Url, Method, cTypeId, cTypeName) {
+
 	$.ajax({
 		url: Url,
 		type: Method,
@@ -181,15 +189,15 @@ function corporationRegister(Url, Method, cTypeId, cTypeName) {
 			corporationName: cTypeName 
 		} 
 	}).done(function(data) {
-        window.alert("成功");
         
 	}).fail(function(data) {
-        window.alert("失敗");
         
 	});
 }
 
+// 業種情報取得メソッド
 function getIndustry(Url, Method) {
+
 	$.ajax({
 		url: Url,
 		type: Method,
@@ -197,18 +205,21 @@ function getIndustry(Url, Method) {
 			id : Method
 		} 
 	}).done(function(data) {
+	
+		// 取得したjsonの要素数分繰り返す
         $.each(data, function(i, industryInfo) {
-        	console.log(JSON.stringify(industryInfo));
+        	// プルダウンの要素を追加
         	$("#industryTypeIdRegister").append("<option value=" + industryInfo.industryTypeId + ">" + industryInfo.industryTypeName + "</option>");
         });
         
 	}).fail(function(data) {
-        window.alert("失敗");
         
 	});
 }
 
+// 職種情報取得メソッド
 function getOccupation(Url, Method) {
+
 	$.ajax({
 		url: Url,
 		type: Method,
@@ -216,13 +227,14 @@ function getOccupation(Url, Method) {
 			id : Method
 		} 
 	}).done(function(data) {
+	
+		// 取得したjsonの要素数分、繰り返す
         $.each(data, function(i, occupationInfo) {
-        	console.log(JSON.stringify(occupationInfo));
+        	// プルダウンの要素を追加
         	$("#occupationTypeIdRegister").append("<option value=" + occupationInfo.occupationTypeId + ">" + occupationInfo.occupationTypeName + "</option>");
         });
         
 	}).fail(function(data) {
-        window.alert("失敗");
         
 	});
 }

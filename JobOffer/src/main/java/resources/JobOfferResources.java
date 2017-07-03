@@ -28,14 +28,27 @@ import io.dropwizard.hibernate.UnitOfWork;
 @Path("/v1")
 public class JobOfferResources {
 	
+	/** 求人情報Dao */
 	private final JobOfferDao jobOfferDao;
 	
+	/** 企業情報Dao */
 	private final CorporationDao corporationDao;
 	
+	/** 業種情報Dao */
 	private final IndustryTypeDao industryTypeDao;
 	
+	/** 職種情報Dao */
 	private final OccupationTypeDao occupationTypeDao;
 	
+	/**
+	 * Resourceクラスのコンストラクタ。
+	 * 各種Daoクラスを設定する。
+	 * 
+	 * @param jobOfferDao 求人情報Dao
+	 * @param corporationDao 企業情報Dao
+	 * @param industryTypeDao 業種情報Dao
+	 * @param occupationTypeDao 職種情報Dao
+	 */
 	public JobOfferResources(JobOfferDao jobOfferDao, CorporationDao corporationDao, 
 			IndustryTypeDao industryTypeDao, OccupationTypeDao occupationTypeDao) {
 		this.jobOfferDao = jobOfferDao;
@@ -68,10 +81,22 @@ public class JobOfferResources {
 		
 	}
 	
+	/**
+	 * 求人情報の登録処理を行うメソッド。(POST)
+	 * 
+	 * @param jobOfferId 求人ID
+	 * @param corporationId 企業ID
+	 * @param jobOfferName 求人名
+	 * @param industryTypeId 業種ID
+	 * @param occupationTypeId 職種ID
+	 * @param catchCopy キャッチコピー
+	 * @param jobOfferOverview 求人概要
+	 * @return 登録した求人情報
+	 */
 	@POST
 	@Path("/job")
-	@UnitOfWork
 	@Produces(MediaType.APPLICATION_JSON)
+	@UnitOfWork
 	public JobOffer jobOfferRegister(
 			@FormParam("jobOfferId") String jobOfferId, 
 			@FormParam("corporationId") String corporationId, 
@@ -88,10 +113,17 @@ public class JobOfferResources {
 		
 	}
 	
+	/**
+	 * 企業情報の登録を行うメソッド。（POST）
+	 * 
+	 * @param corporationId 企業ID
+	 * @param corporationName 企業名
+	 * @return 登録した企業情報
+	 */
 	@POST
 	@Path("/job/corporation")
-	@UnitOfWork
 	@Produces(MediaType.APPLICATION_JSON)
+	@UnitOfWork
 	public Corporation corporationRegist(@FormParam("corporationId") String corporationId, 
 			@FormParam("corporationName") String corporationName) {
 		
@@ -100,10 +132,15 @@ public class JobOfferResources {
 		return corporation;
 	}
 	
+	/**
+	 * 全業種情報を取得するメソッド。（POST）
+	 * 
+	 * @return 業種情報リスト
+	 */
 	@POST
 	@Path("/job/useJobOfferRegister/industry")
-	@UnitOfWork
 	@Produces(MediaType.APPLICATION_JSON)
+	@UnitOfWork
 	public List<IndustryType> getAllIndustryType() {
 		
 		List<IndustryType> IndustryTypeList = industryTypeDao.getAllIndustryType();
@@ -111,10 +148,15 @@ public class JobOfferResources {
 		return IndustryTypeList;
 	}
 	
+	/**
+	 * 全職種情報を取得するメソッド。（POST）
+	 * 
+	 * @return 職種情報リスト
+	 */
 	@POST
 	@Path("/job/useJobOfferRegister/occupation")
-	@UnitOfWork
 	@Produces(MediaType.APPLICATION_JSON)
+	@UnitOfWork
 	public List<OccupationType> getAllOccupationType() {
 		
 		List<OccupationType> OccupationTypeList = occupationTypeDao.getAllOccupationType();

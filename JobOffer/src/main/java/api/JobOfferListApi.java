@@ -25,11 +25,7 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 		new JobOfferListApi().run(args);
 	}
 	
-	/** 
-	 * hibernate
-	 * 
-	 * Entityの登録を行う。
-	 */
+	// hibernate
 	private final HibernateBundle<JobOfferConfiguration> hibernate =
 	        new HibernateBundle<JobOfferConfiguration>(
 	        		JobOffer.class, IndustryType.class, OccupationType.class, Corporation.class) {
@@ -66,18 +62,15 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 		
 		// Daoクラスのインスタンスを生成
 		final JobOfferDao jobOfferDao = new JobOfferDao(hibernate.getSessionFactory());
-		
 		final CorporationDao corporationDao = new CorporationDao(hibernate.getSessionFactory());
-				
 		final IndustryTypeDao industryTypeDao = new IndustryTypeDao(hibernate.getSessionFactory());
-		
 		final OccupationTypeDao occupationTypeDao = new OccupationTypeDao(hibernate.getSessionFactory());
 		
 		// Resourcesクラスのインスタンス生成
-		// JobOfferDaoクラスのインスタンスを渡す
+		// 各Daoクラスのインスタンスを渡す
 		final JobOfferResources resource = new JobOfferResources(jobOfferDao, corporationDao, industryTypeDao, occupationTypeDao);
 		
-		// Resourcesクラスの登録
+		// Resourcesクラスを登録
 		environment.jersey().register(resource);
 		
 	}

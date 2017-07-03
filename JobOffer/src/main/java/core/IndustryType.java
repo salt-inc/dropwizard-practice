@@ -9,6 +9,12 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+/**
+ * 業種情報クラス
+ * 
+ * @author Kazushige Yamaguchi
+ * 
+ */
 @Entity
 @Table(name = "INDUSTRY_TYPE")
 @NamedQueries(
@@ -31,7 +37,7 @@ public class IndustryType implements Serializable {
 	@Column(name = "industryTypeName", nullable = false)
 	private String industryTypeName;
 	
-	// デフォルトコンストラクタは必須！
+	/** デフォルトコンストラクタ */
 	public IndustryType() {
 		
 	}

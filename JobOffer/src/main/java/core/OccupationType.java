@@ -9,6 +9,12 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+/**
+ * 職種情報クラス
+ * 
+ * @author kazu
+ *
+ */
 @Entity
 @Table(name = "OCCUPATION_TYPE")
 @NamedQueries(
@@ -31,7 +37,7 @@ public class OccupationType implements Serializable {
 	@Column(name = "occupationTypeName", nullable = false)
 	private String occupationTypeName;
 	
-	// デフォルトコンストラクタは必須！
+	/** デフォルトコンストラクタ */
 	public OccupationType() {
 		
 	}

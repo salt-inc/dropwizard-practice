@@ -10,9 +10,9 @@ import core.Corporation;
 import io.dropwizard.hibernate.AbstractDAO;
 
 /**
- * 求人情報のDaoクラス
+ * 企業情報のDaoクラス
  * 
- * @author kazu
+ * @author Kazushige Yamaguchi
  *
  */
 public class CorporationDao extends AbstractDAO<Corporation> {
@@ -26,13 +26,15 @@ public class CorporationDao extends AbstractDAO<Corporation> {
     }
 	
     /**
-     * SQLを実行し、検索結果を取得するメソッド。
+     * 企業情報の登録処理を行うメソッド。
      * 
-     * @return 検索条件に当てはまる求人情報リスト
+     * @return 登録した企業情報
      */
 	public Corporation create(String companyId, String companyName) {
 		
 		Corporation company = new Corporation(companyId, companyName);
+		
+		// 登録処理
 		currentSession().save(requireNonNull(company));
 		
 		return company;
