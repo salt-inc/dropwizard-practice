@@ -1,4 +1,13 @@
 .jobOfferTable th { 
   color: white;
   background-color: blue;
+  width: 145px;
+}
+
+.jobOfferTable .leftTdCell { 
+  width: 100px;
+}
+
+#searchBoxTable th {
+  width: 115px;
 }

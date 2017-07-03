@@ -38,41 +38,48 @@ function searchRun(Url, Method, oTypeId, iTypeId, fWord, CallbackFunc, ErrorCall
         	// 検索結果表示用のテーブルに、取得したjsonの要素を設定する
         	
         	$(".jobOfferTable").append("<tr>");
-        	$(".jobOfferTable").append("<th>求人ID：</th>");
-        	$(".jobOfferTable").append("<td>" + jobOfferInfo.jobOfferId + "</td>");
-        	$(".jobOfferTable").append("<th>求人名：</th>");
+        	$(".jobOfferTable").append("<th>求人ID</th>");
+        	$(".jobOfferTable").append("<td class=leftTdCell>" + jobOfferInfo.jobOfferId + "</td>");
+        	$(".jobOfferTable").append("<th>求人名</th>");
         	$(".jobOfferTable").append("<td>" + jobOfferInfo.jobOfferName + "</td>");
         	$(".jobOfferTable").append("</tr>");
         	
         	$(".jobOfferTable").append("<tr>");
-        	$(".jobOfferTable").append("<th>企業ID：</th>");
-        	$(".jobOfferTable").append("<td>" + jobOfferInfo.corporation.corporationId + "</td>");
-        	$(".jobOfferTable").append("<th>企業名：</th>");
+        	$(".jobOfferTable").append("<th>企業ID</th>");
+        	$(".jobOfferTable").append("<td class=leftTdCell>" + jobOfferInfo.corporation.corporationId + "</td>");
+        	$(".jobOfferTable").append("<th>企業名</th>");
         	$(".jobOfferTable").append("<td>" + jobOfferInfo.corporation.corporationName + "</td>");
         	$(".jobOfferTable").append("</tr>");
         	
         	$(".jobOfferTable").append("<tr>");
-        	$(".jobOfferTable").append("<th>業種ID：</th>");
-        	$(".jobOfferTable").append("<td>" + jobOfferInfo.industryType.industryTypeId + "</td>");
-        	$(".jobOfferTable").append("<th>業種：</th>");
+        	$(".jobOfferTable").append("<th>業種ID</th>");
+        	$(".jobOfferTable").append("<td class=leftTdCell>" + jobOfferInfo.industryType.industryTypeId + "</td>");
+        	$(".jobOfferTable").append("<th>業種</th>");
         	$(".jobOfferTable").append("<td>" + jobOfferInfo.industryType.industryTypeName + "</td>");
         	$(".jobOfferTable").append("</tr>");
         	
         	$(".jobOfferTable").append("<tr>");
-        	$(".jobOfferTable").append("<th>職種ID：</th>");
-        	$(".jobOfferTable").append("<td>" + jobOfferInfo.occupationType.occupationTypeId + "</td>");
-        	$(".jobOfferTable").append("<th>職種：</th>");
+        	$(".jobOfferTable").append("<th>職種ID</th>");
+        	$(".jobOfferTable").append("<td class=leftTdCell>" + jobOfferInfo.occupationType.occupationTypeId + "</td>");
+        	$(".jobOfferTable").append("<th>職種</th>");
         	$(".jobOfferTable").append("<td>" + jobOfferInfo.occupationType.occupationTypeName + "</td>");
         	$(".jobOfferTable").append("</tr>");
         	
         	$(".jobOfferTable").append("<tr>");
-        	$(".jobOfferTable").append("<th>キャッチコピー：</th>");
+        	$(".jobOfferTable").append("<th>キャッチコピー</th>");
         	$(".jobOfferTable").append("<td colspan=3>" + jobOfferInfo.catchCopy + "</td>");
         	$(".jobOfferTable").append("</tr>");
         	
+        	var overview = jobOfferInfo.jobOfferOverview;
+        	overview = overview.replace(/\n/g, "<br>");
+        	
         	$(".jobOfferTable").append("<tr>");
-        	$(".jobOfferTable").append("<th>概要：</th>");
-        	$(".jobOfferTable").append("<td colspan=3>" + jobOfferInfo.jobOfferOverview + "</td>");
+        	$(".jobOfferTable").append("<th>概要</th>");
+        	$(".jobOfferTable").append("<td colspan=3>" + overview + "</td>");
+        	$(".jobOfferTable").append("</tr>");
+        	
+        	$(".jobOfferTable").append("<tr>");
+        	$(".jobOfferTable").append("<td colspan=4> =========================================== </td>");
         	$(".jobOfferTable").append("</tr>");
         	
         });
@@ -101,13 +108,19 @@ function showRegisterDialog(category) {
 		getOccupation(url, "POST");
 		
 		// 求人情報登録ダイアログを表示
-		$("#jobOfferRegister").dialog({});
+		$("#jobOfferRegister").dialog({
+			width:450, 
+			height:500
+		});
 		
 	// 企業情報登録の入力欄を表示する場合
 	} else if (category == "corporation") {
 		
 		// 企業情報登録ダイアログを表示
-		$("#corporationRegister").dialog({});
+		$("#corporationRegister").dialog({
+			width:350, 
+			height:250
+		});
 	}
 	
 }
