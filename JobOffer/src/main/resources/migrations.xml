@@ -42,7 +42,7 @@
         
         <createTable tableName="OCCUPATION_TYPE">
         	<column name="occupationTypeId" type="char(6)">
-            	<constraints nullable="false"/>
+            	<constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="occupationTypeName" type="varchar(255)">
                 <constraints nullable="false"/>
@@ -74,8 +74,13 @@
     	</insert>
     	
     	<insert tableName="INDUSTRY_TYPE">
+    		<column name="industryTypeId" value="000000" />
+    		<column name="industryTypeName" value="テスト業種" />
+    	</insert>
+    	
+    	<insert tableName="INDUSTRY_TYPE">
     		<column name="industryTypeId" value="in1001" />
-    		<column name="industryTypeName" value="テスト業種１" />
+    		<column name="industryTypeName" value="業種１" />
     	</insert>
     	
     	<insert tableName="INDUSTRY_TYPE">
@@ -83,14 +88,39 @@
     		<column name="industryTypeName" value="IT" />
     	</insert>
     	
+    	<insert tableName="INDUSTRY_TYPE">
+    		<column name="industryTypeId" value="in1003" />
+    		<column name="industryTypeName" value="食品" />
+    	</insert>
+    	
+    	<insert tableName="INDUSTRY_TYPE">
+    		<column name="industryTypeId" value="in1004" />
+    		<column name="industryTypeName" value="建築" />
+    	</insert>
+    	
+    	<insert tableName="OCCUPATION_TYPE">
+    		<column name="occupationTypeId" value="000000" />
+    		<column name="occupationTypeName" value="テスト職種" />
+    	</insert>
+    	
     	<insert tableName="OCCUPATION_TYPE">
     		<column name="occupationTypeId" value="oc1001" />
-    		<column name="occupationTypeName" value="テスト職種１" />
+    		<column name="occupationTypeName" value="職種１" />
     	</insert>
     	
     	<insert tableName="OCCUPATION_TYPE">
     		<column name="occupationTypeId" value="oc1002" />
     		<column name="occupationTypeName" value="システムエンジニア" />
+    	</insert>
+    	
+    	<insert tableName="OCCUPATION_TYPE">
+    		<column name="occupationTypeId" value="oc1003" />
+    		<column name="occupationTypeName" value="営業" />
+    	</insert>
+    	
+    	<insert tableName="OCCUPATION_TYPE">
+    		<column name="occupationTypeId" value="oc1004" />
+    		<column name="occupationTypeName" value="経理" />
     	</insert>
     	
     </changeSet>
@@ -99,7 +129,7 @@
     
     	<createTable tableName="CORPORATION">
         	<column name="corporationId" type="char(10)">
-                <constraints nullable="false"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="corporationName" type="varchar(255)">
                 <constraints nullable="false"/>
@@ -107,12 +137,28 @@
         </createTable>
         
         <insert tableName="CORPORATION">
+        	<column name="corporationId" value="0000000000" />
+        	<column name="corporationName" value="テスト" />
+        </insert>
+        
+        <insert tableName="CORPORATION">
         	<column name="corporationId" value="cor1000001" />
         	<column name="corporationName" value="株式会社テスト" />
         </insert>
+        
         <insert tableName="CORPORATION">
         	<column name="corporationId" value="cor1000002" />
         	<column name="corporationName" value="ソリューション株式会社" />
+        </insert>
+        
+        <insert tableName="CORPORATION">
+        	<column name="corporationId" value="cor1000003" />
+        	<column name="corporationName" value="ロースハム株式会社" />
+        </insert>
+        
+        <insert tableName="CORPORATION">
+        	<column name="corporationId" value="cor1000004" />
+        	<column name="corporationName" value="有限会社山口組" />
         </insert>
     
     </changeSet>

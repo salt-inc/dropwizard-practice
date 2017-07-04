@@ -9,6 +9,7 @@ import dao.CorporationDao;
 import dao.IndustryTypeDao;
 import dao.JobOfferDao;
 import dao.OccupationTypeDao;
+import filter.RegisterFilter;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
@@ -72,6 +73,8 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 		
 		// Resourcesクラスを登録
 		environment.jersey().register(resource);
+		
+		environment.jersey().register(new RegisterFilter());
 		
 	}
 	

@@ -1,5 +1,6 @@
 package resources;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
@@ -8,9 +9,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import core.Corporation;
 import core.IndustryType;
 import core.JobOffer;
 import core.OccupationType;
@@ -119,17 +121,35 @@ public class JobOfferResources {
 	 * @param corporationId 企業ID
 	 * @param corporationName 企業名
 	 * @return 登録した企業情報
+	 * @throws SQLException 
 	 */
 	@POST
 	@Path("/job/corporation")
-	@Produces(MediaType.APPLICATION_JSON)
 	@UnitOfWork
-	public Corporation corporationRegist(@FormParam("corporationId") String corporationId, 
-			@FormParam("corporationName") String corporationName) {
+	public Response corporationRegist(@FormParam("corporationId") String corporationId, 
+			@FormParam("corporationName") String corporationName) throws SQLException {
 		
-		Corporation corporation = corporationDao.create(corporationId, corporationName);
+		Response res;
 		
-		return corporation;
+		if (corporationId.isEmpty() || corporationName.isEmpty()) {
+			res = Response.status(412).entity("企業IDまたは企業名が入力されていません").build();
+			throw new WebApplicationException(res);
+		}
+		
+		if (corporationId.length() != 10) {
+			res = Response.status(412).entity("企業IDは10桁です。").build();
+			throw new WebApplicationException(res);
+		}
+		
+		if (255 < corporationName.length()) {
+			res = Response.status(412).entity("企業名は255桁までです。").build();
+			throw new WebApplicationException(res);
+		}
+		
+		String resultMessage = corporationDao.create(corporationId, corporationName);
+		res = Response.status(200).entity(resultMessage).build();
+		
+		return res;
 	}
 	
 	/**

@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
 import core.Corporation;
@@ -30,14 +31,14 @@ public class CorporationDao extends AbstractDAO<Corporation> {
      * 
      * @return 登録した企業情報
      */
-	public Corporation create(String companyId, String companyName) {
+	public String create(String companyId, String companyName) {
 		
 		Corporation company = new Corporation(companyId, companyName);
 		
 		// 登録処理
 		currentSession().save(requireNonNull(company));
 		
-		return company;
+		return company.getcorporationId();
     }
 
 }

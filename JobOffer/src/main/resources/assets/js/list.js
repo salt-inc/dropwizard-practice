@@ -169,9 +169,9 @@ function jobOfferRegister(Url, Method, jOfferId, jOfferName, cId,
 			jobOfferOverview: jOfferOverview
 		}
 	}).done(function(data) {
-        
+        window.alert("成功");
 	}).fail(function(data) {
-		
+		window.alert("失敗");
 	});
 }
 
@@ -197,14 +197,15 @@ function corporationRegister(Url, Method, cTypeId, cTypeName) {
 	$.ajax({
 		url: Url,
 		type: Method,
+		dataType: 'text',
 		data: {
 			corporationId: cTypeId, 
 			corporationName: cTypeName 
 		} 
 	}).done(function(data) {
-        
+		window.alert("成功　企業ID：" + data);
 	}).fail(function(data) {
-        
+        window.alert("失敗　原因：" + data.responseText);
 	});
 }
 
