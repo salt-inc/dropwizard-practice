@@ -172,6 +172,14 @@ function jobOfferRegister(Url, Method, jOfferId, jOfferName, cId,
 	}).done(function(data) {
         window.alert("成功　求人ID：" + data);
         $("#jobOfferRegister").dialog('destroy');
+        
+        // 入力項目欄の記載を削除
+        $("#jobOfferIdRegister").val("");
+        $("#jobOfferNameRegister").val("");
+		$("#jobOffer_corporationIdRegister").val("");
+		$("#catchCopyRegister").val("");
+		$("#jobOfferOverviewRegister").val("");
+        
 	}).fail(function(data) {
 		window.alert("失敗　原因：" + data.responseText);
 		$("#jobOfferRegister").dialog('destroy');
@@ -208,6 +216,11 @@ function corporationRegister(Url, Method, cTypeId, cTypeName) {
 	}).done(function(data) {
 		window.alert("成功　企業ID：" + data);
 		$("#corporationRegister").dialog('destroy');
+		
+		// 入力項目欄の記載を削除
+		$("#corporationIdRegister").val("");
+		$("#corporationNameRegister").val("");
+		
 	}).fail(function(data) {
         window.alert("失敗　原因：" + data.responseText);
         $("#corporationRegister").dialog('destroy');
@@ -222,7 +235,11 @@ function getIndustry(Url, Method) {
 		type: Method,
 		data: {
 			id : Method
-		} 
+		}, 
+		beforeSend: function () {
+        	// 実行前にプルダウンの要素を削除する
+        	$("#industryTypeIdRegister").empty();
+    	} 
 	}).done(function(data) {
 	
 		// 取得したjsonの要素数分繰り返す
@@ -244,7 +261,11 @@ function getOccupation(Url, Method) {
 		type: Method,
 		data: {
 			id : Method
-		} 
+		}, 
+		beforeSend: function () {
+        	// 実行前にプルダウンの要素を削除する
+        	$("#occupationTypeIdRegister").empty();
+    	}
 	}).done(function(data) {
 	
 		// 取得したjsonの要素数分、繰り返す
