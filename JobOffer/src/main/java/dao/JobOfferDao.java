@@ -54,9 +54,9 @@ public class JobOfferDao extends AbstractDAO<JobOffer> {
 	 * @param occupationTypeId 職種ID
 	 * @param catchCopy キャッチコピー
 	 * @param jobOfferOverview 求人概要
-	 * @return 求人情報
+	 * @return 求人ID
 	 */
-	public JobOffer create(String jobOfferId,String corporationId, String jobOfferName, String industryTypeId, 
+	public String create(String jobOfferId,String corporationId, String jobOfferName, String industryTypeId, 
 			String occupationTypeId, String catchCopy, String jobOfferOverview) {
 		
 		// 登録処理用のコンストラクタを用いてインスタンスを生成
@@ -66,7 +66,7 @@ public class JobOfferDao extends AbstractDAO<JobOffer> {
 		// 登録処理
 		currentSession().save(requireNonNull(jobOffer));
 		
-		return jobOffer;
+		return jobOffer.getJobOfferId();
     }
 
 }

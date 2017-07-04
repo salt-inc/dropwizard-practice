@@ -1,6 +1,5 @@
 package resources;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
@@ -93,13 +92,12 @@ public class JobOfferResources {
 	 * @param occupationTypeId 職種ID
 	 * @param catchCopy キャッチコピー
 	 * @param jobOfferOverview 求人概要
-	 * @return 登録した求人情報
+	 * @return 求人ID（正常）/エラーメッセージ（異常発生時）
 	 */
 	@POST
 	@Path("/job")
-	@Produces(MediaType.APPLICATION_JSON)
 	@UnitOfWork
-	public JobOffer jobOfferRegister(
+	public Response jobOfferRegister(
 			@FormParam("jobOfferId") String jobOfferId, 
 			@FormParam("corporationId") String corporationId, 
 			@FormParam("jobOfferName") String jobOfferName, 
@@ -108,10 +106,32 @@ public class JobOfferResources {
 			@FormParam("catchCopy") String catchCopy, 
 			@FormParam("jobOfferOverview") String jobOfferOverview) {
 		
-		JobOffer jobOffer = jobOfferDao.create(jobOfferId, corporationId, jobOfferName, industryTypeId, 
+		// 入力されていない項目がないかチェック
+		checkEmpty(412, jobOfferId, corporationId, jobOfferName, industryTypeId, occupationTypeId, catchCopy, jobOfferOverview);
+		
+		// 求人IDの桁数チェック
+		checkEqualsNumberLength(jobOfferId, "求人ID", 10, 412);
+		
+		// 企業IDの桁数チェック
+		checkEqualsNumberLength(corporationId, "企業ID", 10, 412);
+		
+		// 求人名の桁数上限チェック
+		checkOverNumberLength(jobOfferName, "求人名", 255, 412);
+		
+		// キャッチコピーの桁数上限チェック
+		checkOverNumberLength(catchCopy, "キャッチコピー", 255, 412);
+		
+		// 求人概要の桁数上限チェック
+		checkOverNumberLength(jobOfferOverview, "求人概要", 500, 412);
+		
+		// DB登録処理を行い、登録した求人IDを取得する
+		String responseMessage = jobOfferDao.create(jobOfferId, corporationId, jobOfferName, industryTypeId, 
 				occupationTypeId, catchCopy, jobOfferOverview);
 		
-		return jobOffer;
+		// HTTPレスポンスと登録した企業IDを設定する
+		Response res = Response.status(200).entity(responseMessage).build();
+		
+		return res;
 		
 	}
 	
@@ -120,34 +140,28 @@ public class JobOfferResources {
 	 * 
 	 * @param corporationId 企業ID
 	 * @param corporationName 企業名
-	 * @return 登録した企業情報
-	 * @throws SQLException 
+	 * @return 企業ID（正常）/エラーメッセージ（異常発生時）
 	 */
 	@POST
 	@Path("/job/corporation")
 	@UnitOfWork
 	public Response corporationRegist(@FormParam("corporationId") String corporationId, 
-			@FormParam("corporationName") String corporationName) throws SQLException {
+			@FormParam("corporationName") String corporationName) {
 		
-		Response res;
+		// 入力されていない項目がないかチェック
+		checkEmpty(412, corporationId, corporationName);
 		
-		if (corporationId.isEmpty() || corporationName.isEmpty()) {
-			res = Response.status(412).entity("企業IDまたは企業名が入力されていません").build();
-			throw new WebApplicationException(res);
-		}
+		// 企業IDの桁数チェック
+		checkEqualsNumberLength(corporationId, "企業ID", 10, 412);
 		
-		if (corporationId.length() != 10) {
-			res = Response.status(412).entity("企業IDは10桁です。").build();
-			throw new WebApplicationException(res);
-		}
+		// 企業名の桁数上限チェック
+		checkOverNumberLength(corporationName, "企業名", 255, 412);
 		
-		if (255 < corporationName.length()) {
-			res = Response.status(412).entity("企業名は255桁までです。").build();
-			throw new WebApplicationException(res);
-		}
+		// DB登録処理を行い、登録した企業IDを取得する
+		String responseMessage = corporationDao.create(corporationId, corporationName);
 		
-		String resultMessage = corporationDao.create(corporationId, corporationName);
-		res = Response.status(200).entity(resultMessage).build();
+		// HTTPレスポンスと登録した企業IDを設定する
+		Response res = Response.status(200).entity(responseMessage).build();
 		
 		return res;
 	}
@@ -182,6 +196,71 @@ public class JobOfferResources {
 		List<OccupationType> OccupationTypeList = occupationTypeDao.getAllOccupationType();
 		
 		return OccupationTypeList;
+	}
+	
+	/**
+	 * カラムの長さチェックメソッド。
+	 * 長さが0の場合、エラー処理を行う。
+	 * 
+	 * @param HttpStatus エラー発生時のHTTPレスポンス
+	 * @param column カラム（可変長引数）
+	 */
+	private void checkEmpty(int HttpStatus, String... column) {
+		
+		for (String col : column) {
+			
+			// カラムに何も入っていない場合
+			if (col.isEmpty()) {
+				
+				// HTTPレスポンスとメッセージを設定する
+				Response res = Response.status(HttpStatus).entity("入力されていない項目があります").build();
+				throw new WebApplicationException(res);
+			}
+		}
+	}
+	
+	/**
+	 * 桁数一致チェックメソッド。
+	 * 
+	 * @param column カラム
+	 * @param columnName カラム名
+	 * @param columnLength カラムの長さ
+	 * @param httpStatus エラー発生時のHTTPレスポンス
+	 */
+	private void checkEqualsNumberLength(String column, String columnName, int columnLength, int httpStatus) {
+		
+		// カラムの桁数が指定の桁数でない場合
+		if (column.length() != columnLength) {
+			
+			// エラー発生時のレスポンスメッセージ
+			String responseMessage = columnName + "は" + columnLength + "桁です。";
+			
+			// レスポンスを作成し、WebApplicationExceptionを発生させる
+			Response res = Response.status(httpStatus).entity(responseMessage).build();
+			throw new WebApplicationException(res);
+		}
+	}
+	
+	/**
+	 * 桁数上限チェックメソッド。
+	 * 
+	 * @param column カラム
+	 * @param columnName カラム名
+	 * @param columnMaxLength カラムの桁数上限値
+	 * @param httpStatus エラー発生時のHTTPレスポンス
+	 */
+	private void checkOverNumberLength(String column, String columnName, int columnMaxLength, int httpStatus) {
+		
+		// カラムの桁数が上限を超えている場合
+		if (columnMaxLength < column.length()) {
+			
+			// エラー発生時のレスポンスメッセージ
+			String responseMessage = columnName + "は" + columnMaxLength + "桁までです。";
+			
+			// レスポンスを作成し、WebApplicationExceptionを発生させる
+			Response res = Response.status(httpStatus).entity(responseMessage).build();
+			throw new WebApplicationException(res);
+		}
 	}
 
 }

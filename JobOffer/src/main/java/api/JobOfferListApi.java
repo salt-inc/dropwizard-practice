@@ -74,6 +74,7 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 		// Resourcesクラスを登録
 		environment.jersey().register(resource);
 		
+		// Filterクラスを登録
 		environment.jersey().register(new RegisterFilter());
 		
 	}
