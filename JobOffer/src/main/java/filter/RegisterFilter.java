@@ -18,6 +18,7 @@ public class RegisterFilter implements ContainerResponseFilter {
 	public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext)
 			throws IOException {
 		
+		// サーバーエラー発生時に表示するメッセージを設定する
 		if (responseContext.getStatus() == 500) {
 			responseContext.setEntity("サーバーエラーが発生しました");
 		}
