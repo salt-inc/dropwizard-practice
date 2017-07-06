@@ -11,3 +11,7 @@
 #searchBoxTable th {
   width: 115px;
 }
+
+select {
+  width: 180px;
+}
