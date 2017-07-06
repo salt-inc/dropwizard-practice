@@ -99,8 +99,12 @@ function showRegisterDialog(category) {
 	// 求人情報登録の入力欄を表示する場合
 	if (category == "jobOffer") {
 	
+		// 企業情報を取得し、プルダウンに設定する
+		var url = "/api/v1/job/useJobOfferRegister/corporation";
+		getCorporation(url, "POST")
+	
 		// 業種情報を取得し、プルダウンに設定する
-		var url = "/api/v1/job/useJobOfferRegister/industry";
+		url = "/api/v1/job/useJobOfferRegister/industry";
 		getIndustry(url, "POST");
 		
 		// 職種情報を取得し、プルダウンに設定する
@@ -127,6 +131,9 @@ function showRegisterDialog(category) {
 
 // 求人情報登録開始メソッド
 function jobOfferRegisterStart() {
+
+	// ダイアログを閉じる
+	$("#jobOfferRegister").dialog('destroy');
 	
 	// 求人ID
 	var jobOfferId = $("#jobOfferIdRegister").val();
@@ -171,7 +178,6 @@ function jobOfferRegister(Url, Method, jOfferId, jOfferName, cId,
 		}
 	}).done(function(data) {
         window.alert("成功　求人ID：" + data);
-        $("#jobOfferRegister").dialog('destroy');
         
         // 入力項目欄の記載を削除
         $("#jobOfferIdRegister").val("");
@@ -182,12 +188,14 @@ function jobOfferRegister(Url, Method, jOfferId, jOfferName, cId,
         
 	}).fail(function(data) {
 		window.alert("失敗　原因：" + data.responseText);
-		$("#jobOfferRegister").dialog('destroy');
 	});
 }
 
 // 企業情報登録開始メソッド
 function corporationRegisterStart() {
+
+	// ダイアログを閉じる
+	$("#corporationRegister").dialog('destroy');
 	
 	// 企業ID
 	var corporationId = $("#corporationIdRegister").val();
@@ -215,7 +223,6 @@ function corporationRegister(Url, Method, cTypeId, cTypeName) {
 		} 
 	}).done(function(data) {
 		window.alert("成功　企業ID：" + data);
-		$("#corporationRegister").dialog('destroy');
 		
 		// 入力項目欄の記載を削除
 		$("#corporationIdRegister").val("");
@@ -223,7 +230,32 @@ function corporationRegister(Url, Method, cTypeId, cTypeName) {
 		
 	}).fail(function(data) {
         window.alert("失敗　原因：" + data.responseText);
-        $("#corporationRegister").dialog('destroy');
+	});
+}
+
+// 企業情報取得メソッド
+function getCorporation(Url, Method) {
+
+	$.ajax({
+		url: Url,
+		type: Method,
+		data: {
+			id : Method
+		}, 
+		beforeSend: function () {
+        	// 実行前にプルダウンの要素を削除する
+        	$("#jobOffer_corporationIdRegister").empty();
+    	} 
+	}).done(function(data) {
+	
+		// 取得したjsonの要素数分繰り返す
+        $.each(data, function(i, corporationInfo) {
+        	// プルダウンの要素を追加
+        	$("#jobOffer_corporationIdRegister").append("<option value=" + corporationInfo.corporationId + ">" + corporationInfo.corporationName + "</option>");
+        });
+        
+	}).fail(function(data) {
+        
 	});
 }
 

@@ -12,6 +12,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import core.Corporation;
 import core.IndustryType;
 import core.JobOffer;
 import core.OccupationType;
@@ -167,6 +168,22 @@ public class JobOfferResources {
 	}
 	
 	/**
+	 * 全企業情報を取得するメソッド。（POST）
+	 * 
+	 * @return 企業情報リスト
+	 */
+	@POST
+	@Path("/job/useJobOfferRegister/corporation")
+	@Produces(MediaType.APPLICATION_JSON)
+	@UnitOfWork
+	public List<Corporation> getAllCorporation() {
+		
+		List<Corporation> corporationList = corporationDao.getAllCorporation();
+		
+		return corporationList;
+	}
+	
+	/**
 	 * 全業種情報を取得するメソッド。（POST）
 	 * 
 	 * @return 業種情報リスト
@@ -177,9 +194,9 @@ public class JobOfferResources {
 	@UnitOfWork
 	public List<IndustryType> getAllIndustryType() {
 		
-		List<IndustryType> IndustryTypeList = industryTypeDao.getAllIndustryType();
+		List<IndustryType> industryTypeList = industryTypeDao.getAllIndustryType();
 		
-		return IndustryTypeList;
+		return industryTypeList;
 	}
 	
 	/**
