@@ -2,3 +2,6 @@
 .recommenders
 JobOffer/build
 JobOffer/bin
+.log
+.classpath
+.project
