@@ -19,9 +19,13 @@ import io.dropwizard.hibernate.AbstractDAO;
  *
  */
 public class IndustryTypeDao extends AbstractDAO<IndustryType> {
+	
+	/** EntityManager */
+	private final EntityManager entityManager;
 
-	public IndustryTypeDao(SessionFactory sessionFactory) {
+	public IndustryTypeDao(SessionFactory sessionFactory, EntityManager entityManager) {
 		super(sessionFactory);
+		this.entityManager = entityManager;
 	}
 	
 	/**
@@ -31,7 +35,19 @@ public class IndustryTypeDao extends AbstractDAO<IndustryType> {
 	 */
 	public List<IndustryType> loadAllIndustryType() {
 		
-		return null;
+		// CriteriaBuilderを取得
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		
+		// クエリを生成
+		CriteriaQuery<IndustryType> query = builder.createQuery(IndustryType.class);
+		
+		Root<IndustryType> root = query.from(IndustryType.class); 
+		query.select(root);
+		
+		// クエリの実行
+		List<IndustryType> industryTypeList = entityManager.createQuery(query).getResultList();
+		
+		return industryTypeList;
 	}
 
 }

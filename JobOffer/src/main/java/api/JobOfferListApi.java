@@ -1,6 +1,6 @@
 package api;
 
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityManager;
 
 import com.scottescue.dropwizard.entitymanager.EntityManagerBundle;
 
@@ -41,7 +41,7 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 	        };
 	     
 	// entityManager
-	private final EntityManagerBundle<JobOfferConfiguration> entityManager = 
+	private final EntityManagerBundle<JobOfferConfiguration> entityManagerBundle = 
 	        new EntityManagerBundle<JobOfferConfiguration>(
 	        		JobOffer.class, IndustryType.class, OccupationType.class, Corporation.class) {
 	    @Override
@@ -69,25 +69,25 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
         });
 		
 		bootstrap.addBundle(hibernate);
-		bootstrap.addBundle(entityManager);
+		bootstrap.addBundle(entityManagerBundle);
 		
 	}
 
 	@Override
 	public void run(JobOfferConfiguration configuration, Environment environment) throws Exception {
 		
-		final EntityManagerFactory entityManager = this.entityManager.getEntityManagerFactory();
+		final EntityManager entityManager = entityManagerBundle.getEntityManagerFactory().createEntityManager();
 		
 		// Daoクラスのインスタンスを生成
 		final JobOfferDao jobOfferDao = new JobOfferDao(hibernate.getSessionFactory());
 		final CorporationDao corporationDao = new CorporationDao(hibernate.getSessionFactory());
-		final IndustryTypeDao industryTypeDao = new IndustryTypeDao(hibernate.getSessionFactory());
+		final IndustryTypeDao industryTypeDao = new IndustryTypeDao(hibernate.getSessionFactory(), entityManager);
 		final OccupationTypeDao occupationTypeDao = new OccupationTypeDao(hibernate.getSessionFactory());
 		
 		// Resourcesクラスのインスタンス生成
 		// 各Daoクラスのインスタンスを渡す
 		final JobOfferResources resource = new JobOfferResources(
-				jobOfferDao, corporationDao, industryTypeDao, occupationTypeDao, entityManager);
+				jobOfferDao, corporationDao, industryTypeDao, occupationTypeDao);
 		
 		// Resourcesクラスを登録
 		environment.jersey().register(resource);

@@ -2,10 +2,6 @@ package resources;
 
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -46,8 +42,6 @@ public class JobOfferResources {
 	/** 職種情報Dao */
 	private final OccupationTypeDao occupationTypeDao;
 	
-	private EntityManagerFactory entityManager;
-	
 	/**
 	 * Resourceクラスのコンストラクタ。
 	 * 各種Daoクラスを設定する。
@@ -59,13 +53,11 @@ public class JobOfferResources {
 	 */
 	public JobOfferResources(
 			JobOfferDao jobOfferDao, CorporationDao corporationDao, 
-			IndustryTypeDao industryTypeDao, OccupationTypeDao occupationTypeDao, 
-			EntityManagerFactory entityManager) {
+			IndustryTypeDao industryTypeDao, OccupationTypeDao occupationTypeDao) {
 		this.jobOfferDao = jobOfferDao;
 		this.corporationDao = corporationDao;
 		this.industryTypeDao = industryTypeDao;
 		this.occupationTypeDao = occupationTypeDao;
-		this.entityManager = entityManager;
 	}
 	
 	/**
@@ -203,15 +195,7 @@ public class JobOfferResources {
 	@UnitOfWork()
 	public List<IndustryType> loadAllIndustryType() {
 		
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		
-		CriteriaQuery<IndustryType> query = builder.createQuery(IndustryType.class);
-		
-		Root<IndustryType> root = query.from(IndustryType.class);
-		
-		query.select(root);
-		
-		List<IndustryType> industryTypeList = entityManager.createEntityManager().createQuery(query).getResultList();
+		List<IndustryType> industryTypeList = industryTypeDao.loadAllIndustryType();
 		
 		return industryTypeList;
 	}
