@@ -2,6 +2,10 @@ package resources;
 
 import java.util.List;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -42,6 +46,8 @@ public class JobOfferResources {
 	/** 職種情報Dao */
 	private final OccupationTypeDao occupationTypeDao;
 	
+	private EntityManagerFactory entityManager;
+	
 	/**
 	 * Resourceクラスのコンストラクタ。
 	 * 各種Daoクラスを設定する。
@@ -51,12 +57,15 @@ public class JobOfferResources {
 	 * @param industryTypeDao 業種情報Dao
 	 * @param occupationTypeDao 職種情報Dao
 	 */
-	public JobOfferResources(JobOfferDao jobOfferDao, CorporationDao corporationDao, 
-			IndustryTypeDao industryTypeDao, OccupationTypeDao occupationTypeDao) {
+	public JobOfferResources(
+			JobOfferDao jobOfferDao, CorporationDao corporationDao, 
+			IndustryTypeDao industryTypeDao, OccupationTypeDao occupationTypeDao, 
+			EntityManagerFactory entityManager) {
 		this.jobOfferDao = jobOfferDao;
 		this.corporationDao = corporationDao;
 		this.industryTypeDao = industryTypeDao;
 		this.occupationTypeDao = occupationTypeDao;
+		this.entityManager = entityManager;
 	}
 	
 	/**
@@ -77,7 +86,7 @@ public class JobOfferResources {
 			@QueryParam("occupationTypeId") String occupationTypeId, 
 			@QueryParam("freeWord") String freeWord) {
 		
-		List<JobOffer> jobOfferList = jobOfferDao.getSearchResult(industryTypeId, occupationTypeId, freeWord);
+		List<JobOffer> jobOfferList = jobOfferDao.loadSearchResult(industryTypeId, occupationTypeId, freeWord);
 		
 		return jobOfferList;
 		
@@ -176,9 +185,9 @@ public class JobOfferResources {
 	@Path("/job/useJobOfferRegister/corporation")
 	@Produces(MediaType.APPLICATION_JSON)
 	@UnitOfWork
-	public List<Corporation> getAllCorporation() {
+	public List<Corporation> loadAllCorporation() {
 		
-		List<Corporation> corporationList = corporationDao.getAllCorporation();
+		List<Corporation> corporationList = corporationDao.loadAllCorporation();
 		
 		return corporationList;
 	}
@@ -191,10 +200,18 @@ public class JobOfferResources {
 	@POST
 	@Path("/job/useJobOfferRegister/industry")
 	@Produces(MediaType.APPLICATION_JSON)
-	@UnitOfWork
-	public List<IndustryType> getAllIndustryType() {
+	@UnitOfWork()
+	public List<IndustryType> loadAllIndustryType() {
 		
-		List<IndustryType> industryTypeList = industryTypeDao.getAllIndustryType();
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		
+		CriteriaQuery<IndustryType> query = builder.createQuery(IndustryType.class);
+		
+		Root<IndustryType> root = query.from(IndustryType.class);
+		
+		query.select(root);
+		
+		List<IndustryType> industryTypeList = entityManager.createEntityManager().createQuery(query).getResultList();
 		
 		return industryTypeList;
 	}
@@ -208,9 +225,9 @@ public class JobOfferResources {
 	@Path("/job/useJobOfferRegister/occupation")
 	@Produces(MediaType.APPLICATION_JSON)
 	@UnitOfWork
-	public List<OccupationType> getAllOccupationType() {
+	public List<OccupationType> loadAllOccupationType() {
 		
-		List<OccupationType> OccupationTypeList = occupationTypeDao.getAllOccupationType();
+		List<OccupationType> OccupationTypeList = occupationTypeDao.loadAllOccupationType();
 		
 		return OccupationTypeList;
 	}

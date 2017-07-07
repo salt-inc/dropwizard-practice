@@ -27,7 +27,7 @@ public class JobOfferDao extends AbstractDAO<JobOffer> {
      * 
      * @return 検索条件に当てはまる求人情報リスト
      */
-	public List<JobOffer> getSearchResult(
+	public List<JobOffer> loadSearchResult(
 			String industryTypeId, String occupationTypeId, String freeWord) {
 		
 		// クエリの取得

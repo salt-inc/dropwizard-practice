@@ -47,7 +47,7 @@ public class CorporationDao extends AbstractDAO<Corporation> {
 	 * 
 	 * @return 登録されている企業情報のリスト
 	 */
-	public List<Corporation> getAllCorporation() {
+	public List<Corporation> loadAllCorporation() {
 		
 		Query query = namedQuery("core.Corporation.getAll");
 		

@@ -20,6 +20,8 @@ dependencies {
     compile 'io.dropwizard:dropwizard-hibernate:' + dropwizardVersion
     compile 'io.dropwizard:dropwizard-db:' + dropwizardVersion
     
+    compile 'com.scottescue:dropwizard-entitymanager:1.0.0-1'
+    
     compile 'org.mariadb.jdbc:mariadb-java-client:2.0.2'
     
 }

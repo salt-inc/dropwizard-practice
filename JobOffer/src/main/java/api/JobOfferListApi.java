@@ -1,5 +1,9 @@
 package api;
 
+import javax.persistence.EntityManagerFactory;
+
+import com.scottescue.dropwizard.entitymanager.EntityManagerBundle;
+
 import configuration.JobOfferConfiguration;
 import core.Corporation;
 import core.IndustryType;
@@ -35,6 +39,16 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 	                return configuration.getDataSourceFactory();
 	            }
 	        };
+	     
+	// entityManager
+	private final EntityManagerBundle<JobOfferConfiguration> entityManager = 
+	        new EntityManagerBundle<JobOfferConfiguration>(
+	        		JobOffer.class, IndustryType.class, OccupationType.class, Corporation.class) {
+	    @Override
+	    public DataSourceFactory getDataSourceFactory(JobOfferConfiguration configuration) {
+	        return configuration.getDataSourceFactory();
+	    }
+	};
 	
 	@Override
 	public void initialize(Bootstrap<JobOfferConfiguration> bootstrap) {
@@ -55,11 +69,14 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
         });
 		
 		bootstrap.addBundle(hibernate);
+		bootstrap.addBundle(entityManager);
 		
 	}
 
 	@Override
 	public void run(JobOfferConfiguration configuration, Environment environment) throws Exception {
+		
+		final EntityManagerFactory entityManager = this.entityManager.getEntityManagerFactory();
 		
 		// Daoクラスのインスタンスを生成
 		final JobOfferDao jobOfferDao = new JobOfferDao(hibernate.getSessionFactory());
@@ -69,7 +86,8 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 		
 		// Resourcesクラスのインスタンス生成
 		// 各Daoクラスのインスタンスを渡す
-		final JobOfferResources resource = new JobOfferResources(jobOfferDao, corporationDao, industryTypeDao, occupationTypeDao);
+		final JobOfferResources resource = new JobOfferResources(
+				jobOfferDao, corporationDao, industryTypeDao, occupationTypeDao, entityManager);
 		
 		// Resourcesクラスを登録
 		environment.jersey().register(resource);

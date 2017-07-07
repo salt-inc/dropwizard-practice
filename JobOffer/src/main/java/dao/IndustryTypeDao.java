@@ -2,7 +2,11 @@ package dao;
 
 import java.util.List;
 
-import org.hibernate.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.SessionFactory;
 
 import core.IndustryType;
@@ -25,11 +29,9 @@ public class IndustryTypeDao extends AbstractDAO<IndustryType> {
 	 * 
 	 * @return 登録されている業種情報のリスト
 	 */
-	public List<IndustryType> getAllIndustryType() {
+	public List<IndustryType> loadAllIndustryType() {
 		
-		Query query = namedQuery("core.IndustryType.getAll");
-		
-		return list(query);
+		return null;
 	}
 
 }

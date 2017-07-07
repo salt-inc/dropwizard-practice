@@ -25,7 +25,7 @@ public class OccupationTypeDao extends AbstractDAO<OccupationType> {
 	 * 
 	 * @return 登録されている職種情報のリスト
 	 */
-	public List<OccupationType> getAllOccupationType() {
+	public List<OccupationType> loadAllOccupationType() {
 		
 		Query query = namedQuery("core.OccupationType.getAll");
 		
