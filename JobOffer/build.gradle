@@ -3,22 +3,22 @@ apply plugin: 'java'
 
 def defaultEncoding = 'UTF-8'
 def jdkVersion = '1.8'
+def dropwizardVersion = '1.0.6'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'io.dropwizard:dropwizard-core:1.0.6'
-    compile 'io.dropwizard:dropwizard-configuration:1.0.6'
-    compile 'io.dropwizard:dropwizard-assets:1.0.6'
-    compile 'io.dropwizard:dropwizard-views:1.0.6'
-    compile 'io.dropwizard:dropwizard-client:1.0.6'
-    compile 'io.dropwizard:dropwizard-jdbi:1.0.6'
-    compile 'io.dropwizard:dropwizard-migrations:1.0.6'
-    compile 'io.dropwizard:dropwizard-hibernate:1.0.6'
-    
-    compile 'io.dropwizard:dropwizard-db:1.0.6'
+    compile 'io.dropwizard:dropwizard-core:' + dropwizardVersion
+    compile 'io.dropwizard:dropwizard-configuration:' + dropwizardVersion
+    compile 'io.dropwizard:dropwizard-assets:' + dropwizardVersion
+    compile 'io.dropwizard:dropwizard-views:' + dropwizardVersion
+    compile 'io.dropwizard:dropwizard-client:' + dropwizardVersion
+    compile 'io.dropwizard:dropwizard-jdbi:' + dropwizardVersion
+    compile 'io.dropwizard:dropwizard-migrations:' + dropwizardVersion
+    compile 'io.dropwizard:dropwizard-hibernate:' + dropwizardVersion
+    compile 'io.dropwizard:dropwizard-db:' + dropwizardVersion
     
     compile 'org.mariadb.jdbc:mariadb-java-client:2.0.2'
     
