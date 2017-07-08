@@ -4,11 +4,12 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
 import core.JobOffer;
-import io.dropwizard.hibernate.AbstractDAO;
 
 /**
  * 求人情報のDaoクラス
@@ -16,10 +17,10 @@ import io.dropwizard.hibernate.AbstractDAO;
  * @author Kazushige Yamaguchi
  *
  */
-public class JobOfferDao extends AbstractDAO<JobOffer> {
+public class JobOfferDao extends CommonDao<JobOffer> {
 
-	public JobOfferDao(SessionFactory factory) {
-		super(factory);
+	public JobOfferDao(SessionFactory factory, EntityManager entityManager) {
+		super(factory, entityManager);
 	}
 	
     /**

@@ -179,7 +179,7 @@ public class JobOfferResources {
 	@UnitOfWork
 	public List<Corporation> loadAllCorporation() {
 		
-		List<Corporation> corporationList = corporationDao.loadAllCorporation();
+		List<Corporation> corporationList = corporationDao.loadAllData();
 		
 		return corporationList;
 	}
@@ -195,7 +195,7 @@ public class JobOfferResources {
 	@UnitOfWork()
 	public List<IndustryType> loadAllIndustryType() {
 		
-		List<IndustryType> industryTypeList = industryTypeDao.loadAllIndustryType();
+		List<IndustryType> industryTypeList = industryTypeDao.loadAllData();
 		
 		return industryTypeList;
 	}
@@ -211,7 +211,7 @@ public class JobOfferResources {
 	@UnitOfWork
 	public List<OccupationType> loadAllOccupationType() {
 		
-		List<OccupationType> OccupationTypeList = occupationTypeDao.loadAllOccupationType();
+		List<OccupationType> OccupationTypeList = occupationTypeDao.loadAllData();
 		
 		return OccupationTypeList;
 	}

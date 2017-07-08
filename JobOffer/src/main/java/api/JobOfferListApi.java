@@ -79,10 +79,10 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 		final EntityManager entityManager = entityManagerBundle.getEntityManagerFactory().createEntityManager();
 		
 		// Daoクラスのインスタンスを生成
-		final JobOfferDao jobOfferDao = new JobOfferDao(hibernate.getSessionFactory());
-		final CorporationDao corporationDao = new CorporationDao(hibernate.getSessionFactory());
+		final JobOfferDao jobOfferDao = new JobOfferDao(hibernate.getSessionFactory(), entityManager);
+		final CorporationDao corporationDao = new CorporationDao(hibernate.getSessionFactory(), entityManager);
 		final IndustryTypeDao industryTypeDao = new IndustryTypeDao(hibernate.getSessionFactory(), entityManager);
-		final OccupationTypeDao occupationTypeDao = new OccupationTypeDao(hibernate.getSessionFactory());
+		final OccupationTypeDao occupationTypeDao = new OccupationTypeDao(hibernate.getSessionFactory(), entityManager);
 		
 		// Resourcesクラスのインスタンス生成
 		// 各Daoクラスのインスタンスを渡す

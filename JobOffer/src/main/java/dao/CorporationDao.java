@@ -2,14 +2,13 @@ package dao;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.Query;
+import javax.persistence.EntityManager;
+
 import org.hibernate.SessionFactory;
 
 import core.Corporation;
-import io.dropwizard.hibernate.AbstractDAO;
 
 /**
  * 企業情報のDaoクラス
@@ -17,10 +16,10 @@ import io.dropwizard.hibernate.AbstractDAO;
  * @author Kazushige Yamaguchi
  *
  */
-public class CorporationDao extends AbstractDAO<Corporation> {
+public class CorporationDao extends CommonDao<Corporation> {
 
-	public CorporationDao(SessionFactory factory) {
-		super(factory);
+	public CorporationDao(SessionFactory factory, EntityManager entityManager) {
+		super(factory, entityManager);
 	}
 	
 	public Optional<Corporation> findById(Long id) {
@@ -41,17 +40,5 @@ public class CorporationDao extends AbstractDAO<Corporation> {
 		
 		return company.getcorporationId();
     }
-	
-	/**
-	 * 全企業情報をDBから取得し、呼び出し元に返すメソッド。
-	 * 
-	 * @return 登録されている企業情報のリスト
-	 */
-	public List<Corporation> loadAllCorporation() {
-		
-		Query query = namedQuery("core.Corporation.getAll");
-		
-		return list(query);
-	}
 
 }
