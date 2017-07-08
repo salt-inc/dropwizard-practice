@@ -177,6 +177,7 @@ function jobOfferRegister(Url, Method, jOfferId, jOfferName, cId,
 		url: Url,
 		type: Method,
 		dataType: 'text',
+		contentType:'application/json',
 		data: JSON.stringify(JsonData)
 	}).done(function(data) {
         window.alert("成功　求人ID：" + data);
@@ -224,6 +225,7 @@ function corporationRegister(Url, Method, cTypeId, cTypeName) {
 		url: Url,
 		type: Method,
 		dataType: 'text',
+		contentType:'application/json',
 		data: JSON.stringify(JsonData) 
 	}).done(function(data) {
 		window.alert("成功　企業ID：" + data);

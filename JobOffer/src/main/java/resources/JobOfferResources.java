@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -105,26 +105,23 @@ public class JobOfferResources {
 	@POST
 	@Path("/job")
 	@UnitOfWork
-	public Response jobOfferRegister(String jobOfferJson) throws JsonParseException, JsonMappingException, IOException {
-		
-		// 受け取ったjsonデータをマッピングする
-		ObjectMapper mapper = new ObjectMapper();
-		JobOffer registerJobOffer = mapper.readValue(jobOfferJson, JobOffer.class);
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response jobOfferRegister(JobOffer jobOffer) throws JsonParseException, JsonMappingException, IOException {
 		
 		// 求人ID
-		String jobOfferId = registerJobOffer.getJobOfferId();
+		String jobOfferId = jobOffer.getJobOfferId();
 		// 企業ID
-		String corporationId = registerJobOffer.getCorporationId();
+		String corporationId = jobOffer.getCorporationId();
 		// 求人名
-		String jobOfferName = registerJobOffer.getJobOfferName();
+		String jobOfferName = jobOffer.getJobOfferName();
 		// 業種ID
-		String industryTypeId = registerJobOffer.getIndustryTypeId();
+		String industryTypeId = jobOffer.getIndustryTypeId();
 		// 職種ID
-		String occupationTypeId = registerJobOffer.getOccupationTypeId();
+		String occupationTypeId = jobOffer.getOccupationTypeId();
 		// キャッチコピー
-		String catchCopy = registerJobOffer.getCatchCopy();
+		String catchCopy = jobOffer.getCatchCopy();
 		// 求人概要
-		String jobOfferOverview = registerJobOffer.getJobOfferOverview();
+		String jobOfferOverview = jobOffer.getJobOfferOverview();
 		
 		// 入力されていない項目がないかチェック
 		checkEmpty(412, jobOfferId, corporationId, jobOfferName, industryTypeId, occupationTypeId, catchCopy, jobOfferOverview);
@@ -145,7 +142,7 @@ public class JobOfferResources {
 		checkOverNumberLength(jobOfferOverview, "求人概要", 500, 412);
 		
 		// DB登録処理を行い、登録した求人IDを取得する
-		String responseMessage = jobOfferDao.create(registerJobOffer);
+		String responseMessage = jobOfferDao.create(jobOffer);
 		
 		// HTTPレスポンスと登録した企業IDを設定する
 		Response res = Response.status(200).entity(responseMessage).build();
@@ -167,16 +164,13 @@ public class JobOfferResources {
 	@POST
 	@Path("/job/corporation")
 	@UnitOfWork
-	public Response corporationRegist(String corporationJson) throws JsonParseException, JsonMappingException, IOException {
-		
-		// 受け取ったjsonデータをマッピングする
-		ObjectMapper mapper = new ObjectMapper();
-		Corporation registerCorporation = mapper.readValue(corporationJson, Corporation.class);
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response corporationRegist(Corporation corporation) throws JsonParseException, JsonMappingException, IOException {
 		
 		// 企業ID
-		String corporationId = registerCorporation.getcorporationId();
+		String corporationId = corporation.getcorporationId();
 		// 企業名
-		String corporationName = registerCorporation.getcorporationName();
+		String corporationName = corporation.getcorporationName();
 		
 		// 入力されていない項目がないかチェック
 		checkEmpty(412, corporationId, corporationName);
@@ -188,7 +182,7 @@ public class JobOfferResources {
 		checkOverNumberLength(corporationName, "企業名", 255, 412);
 		
 		// DB登録処理を行い、登録した企業IDを取得する
-		String responseMessage = corporationDao.create(registerCorporation);
+		String responseMessage = corporationDao.create(corporation);
 		
 		// HTTPレスポンスと登録した企業IDを設定する
 		Response res = Response.status(200).entity(responseMessage).build();
