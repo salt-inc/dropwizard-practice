@@ -1,7 +1,9 @@
 package resources;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,6 +13,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import core.Corporation;
 import core.IndustryType;
@@ -64,9 +70,6 @@ public class JobOfferResources {
 	 * 検索処理を行い、結果を返すメソッド。（GET）
 	 * JSON形式で返却される。
 	 * 
-	 * @param industryTypeId 業種ID
-	 * @param occupationTypeId 職種ID
-	 * @param freeWord フリーワード
 	 * @return 検索結果
 	 */
 	@GET
@@ -95,18 +98,33 @@ public class JobOfferResources {
 	 * @param catchCopy キャッチコピー
 	 * @param jobOfferOverview 求人概要
 	 * @return 求人ID（正常）/エラーメッセージ（異常発生時）
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
 	 */
 	@POST
 	@Path("/job")
 	@UnitOfWork
-	public Response jobOfferRegister(
-			@FormParam("jobOfferId") String jobOfferId, 
-			@FormParam("corporationId") String corporationId, 
-			@FormParam("jobOfferName") String jobOfferName, 
-			@FormParam("industryTypeId") String industryTypeId, 
-			@FormParam("occupationTypeId") String occupationTypeId, 
-			@FormParam("catchCopy") String catchCopy, 
-			@FormParam("jobOfferOverview") String jobOfferOverview) {
+	public Response jobOfferRegister(String jobOfferJson) throws JsonParseException, JsonMappingException, IOException {
+		
+		// 受け取ったjsonデータをマッピングする
+		ObjectMapper mapper = new ObjectMapper();
+		JobOffer registerJobOffer = mapper.readValue(jobOfferJson, JobOffer.class);
+		
+		// 求人ID
+		String jobOfferId = registerJobOffer.getJobOfferId();
+		// 企業ID
+		String corporationId = registerJobOffer.getCorporationId();
+		// 求人名
+		String jobOfferName = registerJobOffer.getJobOfferName();
+		// 業種ID
+		String industryTypeId = registerJobOffer.getIndustryTypeId();
+		// 職種ID
+		String occupationTypeId = registerJobOffer.getOccupationTypeId();
+		// キャッチコピー
+		String catchCopy = registerJobOffer.getCatchCopy();
+		// 求人概要
+		String jobOfferOverview = registerJobOffer.getJobOfferOverview();
 		
 		// 入力されていない項目がないかチェック
 		checkEmpty(412, jobOfferId, corporationId, jobOfferName, industryTypeId, occupationTypeId, catchCopy, jobOfferOverview);
@@ -127,8 +145,7 @@ public class JobOfferResources {
 		checkOverNumberLength(jobOfferOverview, "求人概要", 500, 412);
 		
 		// DB登録処理を行い、登録した求人IDを取得する
-		String responseMessage = jobOfferDao.create(jobOfferId, corporationId, jobOfferName, industryTypeId, 
-				occupationTypeId, catchCopy, jobOfferOverview);
+		String responseMessage = jobOfferDao.create(registerJobOffer);
 		
 		// HTTPレスポンスと登録した企業IDを設定する
 		Response res = Response.status(200).entity(responseMessage).build();
@@ -143,12 +160,23 @@ public class JobOfferResources {
 	 * @param corporationId 企業ID
 	 * @param corporationName 企業名
 	 * @return 企業ID（正常）/エラーメッセージ（異常発生時）
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
 	 */
 	@POST
 	@Path("/job/corporation")
 	@UnitOfWork
-	public Response corporationRegist(@FormParam("corporationId") String corporationId, 
-			@FormParam("corporationName") String corporationName) {
+	public Response corporationRegist(String corporationJson) throws JsonParseException, JsonMappingException, IOException {
+		
+		// 受け取ったjsonデータをマッピングする
+		ObjectMapper mapper = new ObjectMapper();
+		Corporation registerCorporation = mapper.readValue(corporationJson, Corporation.class);
+		
+		// 企業ID
+		String corporationId = registerCorporation.getcorporationId();
+		// 企業名
+		String corporationName = registerCorporation.getcorporationName();
 		
 		// 入力されていない項目がないかチェック
 		checkEmpty(412, corporationId, corporationName);
@@ -160,12 +188,13 @@ public class JobOfferResources {
 		checkOverNumberLength(corporationName, "企業名", 255, 412);
 		
 		// DB登録処理を行い、登録した企業IDを取得する
-		String responseMessage = corporationDao.create(corporationId, corporationName);
+		String responseMessage = corporationDao.create(registerCorporation);
 		
 		// HTTPレスポンスと登録した企業IDを設定する
 		Response res = Response.status(200).entity(responseMessage).build();
 		
 		return res;
+		
 	}
 	
 	/**

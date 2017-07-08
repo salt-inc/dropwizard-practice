@@ -1,11 +1,16 @@
 package core;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "CORPORATION")
@@ -18,7 +23,7 @@ import javax.persistence.Table;
 	        )
 	    }
 	)
-public class Corporation {
+public class Corporation implements Serializable {
 	
 	/** 企業ID */
 	@Id
@@ -35,7 +40,10 @@ public class Corporation {
 	}
 	
 	/** 登録処理用コンストラクタ */
-	public Corporation(String corporationId, String corporationName) {
+	@JsonCreator
+	public Corporation(
+			@JsonProperty("corporationId") String corporationId,
+			@JsonProperty("corporationName") String corporationName) {
 		this.corporationId = corporationId;
 		this.corporationName = corporationName;
 	}

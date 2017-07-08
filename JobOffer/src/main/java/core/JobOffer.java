@@ -11,6 +11,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.ws.rs.FormParam;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * 求人情報
@@ -93,21 +97,16 @@ public class JobOffer implements Serializable {
 		
 	}
 	
-	/** 検索処理用コンストラクタ */
-	public JobOffer(String jobOfferId, Corporation corporation, String jobOfferName, IndustryType industryType, 
-			OccupationType occupationType, String catchCopy, String jobOfferOverview) {
-		this.jobOfferId = jobOfferId;
-		this.corporation = corporation;
-		this.jobOfferName = jobOfferName;
-		this.industryType = industryType;
-		this.occupationType = occupationType;
-		this.catchCopy = catchCopy;
-		this.jobOfferOverview = jobOfferOverview;
-	}
-	
 	/** 登録処理用コンストラクタ */
-	public JobOffer(String jobOfferId,String corporationId, String jobOfferName, String industryTypeId, 
-			String occupationTypeId, String catchCopy, String jobOfferOverview) {
+	@JsonCreator
+	public JobOffer(
+			@JsonProperty("jobOfferId") String jobOfferId, 
+			@JsonProperty("jobOfferName") String jobOfferName, 
+			@JsonProperty("corporationId") String corporationId, 
+			@JsonProperty("industryTypeId") String industryTypeId, 
+			@JsonProperty("occupationTypeId") String occupationTypeId, 
+			@JsonProperty("catchCopy") String catchCopy, 
+			@JsonProperty("jobOfferOverview") String jobOfferOverview) {
 		this.jobOfferId = jobOfferId;
 		this.corporationId = corporationId;
 		this.jobOfferName = jobOfferName;
@@ -121,72 +120,40 @@ public class JobOffer implements Serializable {
 		return jobOfferId;
 	}
 
-	public void setJobOfferId(String jobOfferId) {
-		this.jobOfferId = jobOfferId;
-	}
-
-	public Corporation getcorporation() {
-		return corporation;
-	}
-
-	public void setcorporation(Corporation corporation) {
-		this.corporation = corporation;
-	}
-
 	public String getJobOfferName() {
 		return jobOfferName;
 	}
 
-	public void setJobOfferName(String jobOfferName) {
-		this.jobOfferName = jobOfferName;
+	public String getCorporationId() {
+		return corporationId;
+	}
+
+	public Corporation getCorporation() {
+		return corporation;
+	}
+
+	public String getIndustryTypeId() {
+		return industryTypeId;
 	}
 
 	public IndustryType getIndustryType() {
 		return industryType;
 	}
 
-	public void setIndustryType(IndustryType industryType) {
-		this.industryType = industryType;
+	public String getOccupationTypeId() {
+		return occupationTypeId;
 	}
 
 	public OccupationType getOccupationType() {
 		return occupationType;
 	}
 
-	public void setOccupationType(OccupationType occupationType) {
-		this.occupationType = occupationType;
-	}
-
 	public String getCatchCopy() {
 		return catchCopy;
 	}
 
-	public void setCatchCopy(String catchCopy) {
-		this.catchCopy = catchCopy;
-	}
-
 	public String getJobOfferOverview() {
 		return jobOfferOverview;
-	}
-
-	public void setJobOfferOverview(String jobOfferOverview) {
-		this.jobOfferOverview = jobOfferOverview;
-	}
-
-	public void setCorporationId(String corporationId) {
-		this.corporationId = corporationId;
-	}
-
-	public void setCorporation(Corporation corporation) {
-		this.corporation = corporation;
-	}
-
-	public void setIndustryTypeId(String industryTypeId) {
-		this.industryTypeId = industryTypeId;
-	}
-
-	public void setOccupationTypeId(String occupationTypeId) {
-		this.occupationTypeId = occupationTypeId;
 	}
 
 }

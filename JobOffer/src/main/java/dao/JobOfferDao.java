@@ -56,12 +56,7 @@ public class JobOfferDao extends CommonDao<JobOffer> {
 	 * @param jobOfferOverview 求人概要
 	 * @return 求人ID
 	 */
-	public String create(String jobOfferId,String corporationId, String jobOfferName, String industryTypeId, 
-			String occupationTypeId, String catchCopy, String jobOfferOverview) {
-		
-		// 登録処理用のコンストラクタを用いてインスタンスを生成
-		JobOffer jobOffer = new JobOffer(jobOfferId, corporationId, jobOfferName, industryTypeId, 
-				occupationTypeId, catchCopy, jobOfferOverview);
+	public String create(JobOffer jobOffer) {
 		
 		// 登録処理
 		currentSession().save(requireNonNull(jobOffer));

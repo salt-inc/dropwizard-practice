@@ -29,16 +29,14 @@ public class CorporationDao extends CommonDao<Corporation> {
     /**
      * 企業情報の登録処理を行うメソッド。
      * 
-     * @return 登録した企業情報
+     * @return 登録した企業情報のID
      */
-	public String create(String companyId, String companyName) {
-		
-		Corporation company = new Corporation(companyId, companyName);
+	public String create(Corporation corporation) {
 		
 		// 登録処理
-		currentSession().save(requireNonNull(company));
+		currentSession().save(requireNonNull(corporation));
 		
-		return company.getcorporationId();
+		return corporation.getcorporationId();
     }
 
 }

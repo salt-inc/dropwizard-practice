@@ -163,19 +163,21 @@ function jobOfferRegisterStart() {
 function jobOfferRegister(Url, Method, jOfferId, jOfferName, cId, 
 	iTypeId, oTypeId, cCopy, jOfferOverview) {
 	
+	var JsonData = {
+		jobOfferId: jOfferId, 
+		jobOfferName: jOfferName, 
+		corporationId: cId, 
+		industryTypeId: iTypeId, 
+		occupationTypeId: oTypeId, 
+		catchCopy: cCopy, 
+		jobOfferOverview: jOfferOverview
+	};
+	
 	$.ajax({
 		url: Url,
 		type: Method,
 		dataType: 'text',
-		data: {
-			jobOfferId: jOfferId, 
-			jobOfferName: jOfferName, 
-			corporationId: cId, 
-			industryTypeId: iTypeId, 
-			occupationTypeId: oTypeId, 
-			catchCopy: cCopy, 
-			jobOfferOverview: jOfferOverview
-		}
+		data: JSON.stringify(JsonData)
 	}).done(function(data) {
         window.alert("成功　求人ID：" + data);
         
@@ -213,14 +215,16 @@ function corporationRegisterStart() {
 // 企業情報登録処理メソッド
 function corporationRegister(Url, Method, cTypeId, cTypeName) {
 
-	$.ajax({
+	var JsonData = {
+        corporationId: cTypeId, 
+        corporationName: cTypeName  
+    };
+    
+   	$.ajax({
 		url: Url,
 		type: Method,
 		dataType: 'text',
-		data: {
-			corporationId: cTypeId, 
-			corporationName: cTypeName 
-		} 
+		data: JSON.stringify(JsonData) 
 	}).done(function(data) {
 		window.alert("成功　企業ID：" + data);
 		
