@@ -17,15 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "INDUSTRY_TYPE")
-@NamedQueries(
-	    {
-	        @NamedQuery(
-	            name = "core.IndustryType.getAll",
-	            query = "SELECT industry "
-	            		+ "FROM IndustryType industry "
-	        )
-	    }
-	)
 public class IndustryType implements Serializable {
 	
 	/** 業種ID */

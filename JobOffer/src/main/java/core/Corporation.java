@@ -17,15 +17,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "CORPORATION")
-@NamedQueries(
-	    {
-	        @NamedQuery(
-	            name = "core.Corporation.getAll",
-	            query = "SELECT corporation "
-	            		+ "FROM Corporation corporation "
-	        )
-	    }
-	)
 public class Corporation implements Serializable {
 	
 	/** 企業ID */

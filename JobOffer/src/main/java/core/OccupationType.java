@@ -17,15 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "OCCUPATION_TYPE")
-@NamedQueries(
-	    {
-	        @NamedQuery(
-	            name = "core.OccupationType.getAll",
-	            query = "SELECT occupation "
-	            		+ "FROM OccupationType occupation "
-	        )
-	    }
-	)
 public class OccupationType implements Serializable {
 	
 	/** 職種ID */
