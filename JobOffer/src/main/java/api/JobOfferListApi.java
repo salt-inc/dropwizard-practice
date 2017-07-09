@@ -21,6 +21,7 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import mapper.ConstraintViolationExceptionMapper;
 import resources.JobOfferResources;
 
 public class JobOfferListApi extends Application<JobOfferConfiguration>{
@@ -94,6 +95,8 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 		
 		// Filterクラスを登録
 		environment.jersey().register(new RegisterFilter());
+		
+		environment.jersey().register(new ConstraintViolationExceptionMapper());
 		
 	}
 	

@@ -3,20 +3,18 @@ package resources;
 import java.io.IOException;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import core.Corporation;
 import core.IndustryType;
@@ -70,6 +68,9 @@ public class JobOfferResources {
 	 * 検索処理を行い、結果を返すメソッド。（GET）
 	 * JSON形式で返却される。
 	 * 
+	 * @param industryTypeId 業種ID
+	 * @param occupationTypeId 職種ID
+	 * @param freeWord フリーワード
 	 * @return 検索結果
 	 */
 	@GET
@@ -90,14 +91,8 @@ public class JobOfferResources {
 	/**
 	 * 求人情報の登録処理を行うメソッド。(POST)
 	 * 
-	 * @param jobOfferId 求人ID
-	 * @param corporationId 企業ID
-	 * @param jobOfferName 求人名
-	 * @param industryTypeId 業種ID
-	 * @param occupationTypeId 職種ID
-	 * @param catchCopy キャッチコピー
-	 * @param jobOfferOverview 求人概要
-	 * @return 求人ID（正常）/エラーメッセージ（異常発生時）
+	 * @param jobOffer 登録する求人情報
+	 * @return 求人ID
 	 * @throws IOException 
 	 * @throws JsonMappingException 
 	 * @throws JsonParseException 
@@ -105,41 +100,9 @@ public class JobOfferResources {
 	@POST
 	@Path("/job")
 	@UnitOfWork
+	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response jobOfferRegister(JobOffer jobOffer) throws JsonParseException, JsonMappingException, IOException {
-		
-		// 求人ID
-		String jobOfferId = jobOffer.getJobOfferId();
-		// 企業ID
-		String corporationId = jobOffer.getCorporationId();
-		// 求人名
-		String jobOfferName = jobOffer.getJobOfferName();
-		// 業種ID
-		String industryTypeId = jobOffer.getIndustryTypeId();
-		// 職種ID
-		String occupationTypeId = jobOffer.getOccupationTypeId();
-		// キャッチコピー
-		String catchCopy = jobOffer.getCatchCopy();
-		// 求人概要
-		String jobOfferOverview = jobOffer.getJobOfferOverview();
-		
-		// 入力されていない項目がないかチェック
-		checkEmpty(412, jobOfferId, corporationId, jobOfferName, industryTypeId, occupationTypeId, catchCopy, jobOfferOverview);
-		
-		// 求人IDの桁数チェック
-		checkEqualsNumberLength(jobOfferId, "求人ID", 10, 412);
-		
-		// 企業IDの桁数チェック
-		checkEqualsNumberLength(corporationId, "企業ID", 10, 412);
-		
-		// 求人名の桁数上限チェック
-		checkOverNumberLength(jobOfferName, "求人名", 255, 412);
-		
-		// キャッチコピーの桁数上限チェック
-		checkOverNumberLength(catchCopy, "キャッチコピー", 255, 412);
-		
-		// 求人概要の桁数上限チェック
-		checkOverNumberLength(jobOfferOverview, "求人概要", 500, 412);
+	public Response jobOfferRegister(@NotNull JobOffer jobOffer) throws JsonParseException, JsonMappingException, IOException {
 		
 		// DB登録処理を行い、登録した求人IDを取得する
 		String responseMessage = jobOfferDao.create(jobOffer);
@@ -154,9 +117,8 @@ public class JobOfferResources {
 	/**
 	 * 企業情報の登録を行うメソッド。（POST）
 	 * 
-	 * @param corporationId 企業ID
-	 * @param corporationName 企業名
-	 * @return 企業ID（正常）/エラーメッセージ（異常発生時）
+	 * @param corporation 登録する企業情報
+	 * @return 企業ID
 	 * @throws IOException 
 	 * @throws JsonMappingException 
 	 * @throws JsonParseException 
@@ -164,22 +126,9 @@ public class JobOfferResources {
 	@POST
 	@Path("/job/corporation")
 	@UnitOfWork
+	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response corporationRegist(Corporation corporation) throws JsonParseException, JsonMappingException, IOException {
-		
-		// 企業ID
-		String corporationId = corporation.getcorporationId();
-		// 企業名
-		String corporationName = corporation.getcorporationName();
-		
-		// 入力されていない項目がないかチェック
-		checkEmpty(412, corporationId, corporationName);
-		
-		// 企業IDの桁数チェック
-		checkEqualsNumberLength(corporationId, "企業ID", 10, 412);
-		
-		// 企業名の桁数上限チェック
-		checkOverNumberLength(corporationName, "企業名", 255, 412);
+	public Response corporationRegist(@NotNull Corporation corporation) throws JsonParseException, JsonMappingException, IOException {
 		
 		// DB登録処理を行い、登録した企業IDを取得する
 		String responseMessage = corporationDao.create(corporation);
@@ -237,71 +186,6 @@ public class JobOfferResources {
 		List<OccupationType> OccupationTypeList = occupationTypeDao.loadAllData();
 		
 		return OccupationTypeList;
-	}
-	
-	/**
-	 * カラムの長さチェックメソッド。
-	 * 長さが0の場合、エラー処理を行う。
-	 * 
-	 * @param HttpStatus エラー発生時のHTTPレスポンス
-	 * @param column カラム（可変長引数）
-	 */
-	private void checkEmpty(int HttpStatus, String... column) {
-		
-		for (String col : column) {
-			
-			// カラムに何も入っていない場合
-			if (col.isEmpty()) {
-				
-				// HTTPレスポンスとメッセージを設定する
-				Response res = Response.status(HttpStatus).entity("入力されていない項目があります").build();
-				throw new WebApplicationException(res);
-			}
-		}
-	}
-	
-	/**
-	 * 桁数一致チェックメソッド。
-	 * 
-	 * @param column カラム
-	 * @param columnName カラム名
-	 * @param columnLength カラムの長さ
-	 * @param httpStatus エラー発生時のHTTPレスポンス
-	 */
-	private void checkEqualsNumberLength(String column, String columnName, int columnLength, int httpStatus) {
-		
-		// カラムの桁数が指定の桁数でない場合
-		if (column.length() != columnLength) {
-			
-			// エラー発生時のレスポンスメッセージ
-			String responseMessage = columnName + "は" + columnLength + "桁です。";
-			
-			// レスポンスを作成し、WebApplicationExceptionを発生させる
-			Response res = Response.status(httpStatus).entity(responseMessage).build();
-			throw new WebApplicationException(res);
-		}
-	}
-	
-	/**
-	 * 桁数上限チェックメソッド。
-	 * 
-	 * @param column カラム
-	 * @param columnName カラム名
-	 * @param columnMaxLength カラムの桁数上限値
-	 * @param httpStatus エラー発生時のHTTPレスポンス
-	 */
-	private void checkOverNumberLength(String column, String columnName, int columnMaxLength, int httpStatus) {
-		
-		// カラムの桁数が上限を超えている場合
-		if (columnMaxLength < column.length()) {
-			
-			// エラー発生時のレスポンスメッセージ
-			String responseMessage = columnName + "は" + columnMaxLength + "桁までです。";
-			
-			// レスポンスを作成し、WebApplicationExceptionを発生させる
-			Response res = Response.status(httpStatus).entity(responseMessage).build();
-			throw new WebApplicationException(res);
-		}
 	}
 
 }

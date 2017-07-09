@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
+import javax.validation.Valid;
 
 import org.hibernate.SessionFactory;
 
@@ -36,7 +37,7 @@ public class CorporationDao extends CommonDao<Corporation> {
 		// 登録処理
 		currentSession().save(requireNonNull(corporation));
 		
-		return corporation.getcorporationId();
+		return corporation.getCorporationId();
     }
 
 }

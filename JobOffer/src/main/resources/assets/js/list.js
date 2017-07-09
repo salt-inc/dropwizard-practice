@@ -180,7 +180,7 @@ function jobOfferRegister(Url, Method, jOfferId, jOfferName, cId,
 		contentType:'application/json',
 		data: JSON.stringify(JsonData)
 	}).done(function(data) {
-        window.alert("成功　求人ID：" + data);
+        window.alert("成功\n求人ID：" + data);
         
         // 入力項目欄の記載を削除
         $("#jobOfferIdRegister").val("");
@@ -190,7 +190,7 @@ function jobOfferRegister(Url, Method, jOfferId, jOfferName, cId,
 		$("#jobOfferOverviewRegister").val("");
         
 	}).fail(function(data) {
-		window.alert("失敗　原因：" + data.responseText);
+		window.alert("求人情報の登録に失敗しました。\n原因：\n" + data.responseText);
 	});
 }
 
@@ -228,14 +228,14 @@ function corporationRegister(Url, Method, cTypeId, cTypeName) {
 		contentType:'application/json',
 		data: JSON.stringify(JsonData) 
 	}).done(function(data) {
-		window.alert("成功　企業ID：" + data);
+		window.alert("成功\n企業ID：" + data);
 		
 		// 入力項目欄の記載を削除
 		$("#corporationIdRegister").val("");
 		$("#corporationNameRegister").val("");
 		
 	}).fail(function(data) {
-        window.alert("失敗　原因：" + data.responseText);
+        window.alert("企業情報の登録に失敗しました。\n原因：\n" + data.responseText);
 	});
 }
 
