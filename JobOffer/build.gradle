@@ -10,16 +10,16 @@ repositories {
 }
 
 dependencies {
-    compile 'io.dropwizard:dropwizard-core:' + dropwizardVersion
-    compile 'io.dropwizard:dropwizard-configuration:' + dropwizardVersion
-    compile 'io.dropwizard:dropwizard-assets:' + dropwizardVersion
-    compile 'io.dropwizard:dropwizard-views:' + dropwizardVersion
-    compile 'io.dropwizard:dropwizard-client:' + dropwizardVersion
-    compile 'io.dropwizard:dropwizard-jdbi:' + dropwizardVersion
-    compile 'io.dropwizard:dropwizard-migrations:' + dropwizardVersion
-    compile 'io.dropwizard:dropwizard-hibernate:' + dropwizardVersion
-    compile 'io.dropwizard:dropwizard-db:' + dropwizardVersion
-    compile 'io.dropwizard:dropwizard-validation:' + dropwizardVersion
+    compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
+    compile "io.dropwizard:dropwizard-configuration:$dropwizardVersion"
+    compile "io.dropwizard:dropwizard-assets:$dropwizardVersion"
+    compile "io.dropwizard:dropwizard-views:$dropwizardVersion"
+    compile "io.dropwizard:dropwizard-client:$dropwizardVersion"
+    compile "io.dropwizard:dropwizard-jdbi:$dropwizardVersion"
+    compile "io.dropwizard:dropwizard-migrations:$dropwizardVersion"
+    compile "io.dropwizard:dropwizard-hibernate:$dropwizardVersion"
+    compile "io.dropwizard:dropwizard-db:$dropwizardVersion"
+    compile "io.dropwizard:dropwizard-validation:$dropwizardVersion"
     
     compile 'com.scottescue:dropwizard-entitymanager:1.0.0-1'
     
