@@ -15,11 +15,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.dropwizard.jackson.JsonSnakeCase;
-
 /**
  * 求人情報
  * 
@@ -116,15 +111,14 @@ public class JobOffer implements Serializable {
 	}
 	
 	/** 登録処理用コンストラクタ */
-	@JsonCreator
 	public JobOffer(
-			@JsonProperty("jobOfferId") String jobOfferId, 
-			@JsonProperty("jobOfferName") String jobOfferName, 
-			@JsonProperty("corporationId") String corporationId, 
-			@JsonProperty("industryTypeId") String industryTypeId, 
-			@JsonProperty("occupationTypeId") String occupationTypeId, 
-			@JsonProperty("catchCopy") String catchCopy, 
-			@JsonProperty("jobOfferOverview") String jobOfferOverview) {
+			String jobOfferId, 
+			String jobOfferName, 
+			String corporationId, 
+			String industryTypeId, 
+			String occupationTypeId, 
+			String catchCopy, 
+			String jobOfferOverview) {
 		this.jobOfferId = jobOfferId;
 		this.corporationId = corporationId;
 		this.jobOfferName = jobOfferName;

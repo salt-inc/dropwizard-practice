@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -25,6 +26,7 @@ import dao.IndustryTypeDao;
 import dao.JobOfferDao;
 import dao.OccupationTypeDao;
 import io.dropwizard.hibernate.UnitOfWork;
+import parameter.JobOfferRegisterParameter;
 
 /**
  * Resourceクラス。
@@ -91,7 +93,7 @@ public class JobOfferResources {
 	/**
 	 * 求人情報の登録処理を行うメソッド。(POST)
 	 * 
-	 * @param jobOffer 登録する求人情報
+	 * @param parameter 求人情報の登録パラメータ
 	 * @return 求人ID
 	 * @throws IOException 
 	 * @throws JsonMappingException 
@@ -102,13 +104,17 @@ public class JobOfferResources {
 	@UnitOfWork
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response jobOfferRegister(@NotNull JobOffer jobOffer) throws JsonParseException, JsonMappingException, IOException {
+	public Response jobOfferRegister(@NotNull JobOfferRegisterParameter parameter) 
+			throws JsonParseException, JsonMappingException, IOException {
+		
+		// JobOfferRegisterParameterクラスの内容をJobOfferクラスに変換する
+		JobOffer jobOffer = toJobOffer(parameter);
 		
 		// DB登録処理を行い、登録した求人IDを取得する
 		String responseMessage = jobOfferDao.create(jobOffer);
 		
 		// HTTPレスポンスと登録した企業IDを設定する
-		Response res = Response.status(200).entity(responseMessage).build();
+		Response res = Response.status(Status.OK).entity(responseMessage).build();
 		
 		return res;
 		
@@ -134,7 +140,7 @@ public class JobOfferResources {
 		String responseMessage = corporationDao.create(corporation);
 		
 		// HTTPレスポンスと登録した企業IDを設定する
-		Response res = Response.status(200).entity(responseMessage).build();
+		Response res = Response.status(Status.OK).entity(responseMessage).build();
 		
 		return res;
 		
@@ -186,6 +192,24 @@ public class JobOfferResources {
 		List<OccupationType> OccupationTypeList = occupationTypeDao.loadAllData();
 		
 		return OccupationTypeList;
+	}
+	
+	/**
+	 * JobOfferRegisterParameter→JobOfferへの変換メソッド
+	 * 
+	 * @param parameter JobOfferRegisterParameterクラスの変数
+	 * @return JobOfferクラスの変数
+	 */
+	private JobOffer toJobOffer(JobOfferRegisterParameter parameter) {
+		
+		return new JobOffer(
+				parameter.getJobOfferId(), 
+				parameter.getJobOfferName(), 
+				parameter.getCorporationId(), 
+				parameter.getIndustryTypeId(), 
+				parameter.getOccupationTypeId(), 
+				parameter.getCatchCopy(), 
+				parameter.getJobOfferOverview());
 	}
 
 }

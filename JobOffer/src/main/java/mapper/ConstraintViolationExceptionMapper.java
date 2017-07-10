@@ -1,12 +1,13 @@
 package mapper;
 
-import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 
 public class ConstraintViolationExceptionMapper implements ExceptionMapper<ConstraintViolationException>{
@@ -19,15 +20,12 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
 		
 		final Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
 		
-		String responseMessage = "";
+		// 返却するメッセージを設定
+		String responseMessage = violations.stream()
+			.map(message -> message.getMessage() + BR)
+			.collect(Collectors.joining());
 		
-		Iterator<ConstraintViolation<?>> iterator = violations.iterator();
-		
-		while (iterator.hasNext()) {
-			responseMessage += iterator.next().getMessage() + BR;
-		}
-		
-		return Response.status(412).type(MediaType.TEXT_PLAIN_TYPE)
+		return Response.status(Status.PRECONDITION_FAILED).type(MediaType.TEXT_PLAIN_TYPE)
 				.entity(responseMessage).build();
 	}
 
