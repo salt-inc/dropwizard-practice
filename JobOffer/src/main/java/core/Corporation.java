@@ -38,10 +38,7 @@ public class Corporation implements Serializable {
 	}
 	
 	/** 登録処理用コンストラクタ */
-	@JsonCreator
-	public Corporation(
-			@JsonProperty("corporationId") String corporationId,
-			@JsonProperty("corporationName") String corporationName) {
+	public Corporation(String corporationId, String corporationName) {
 		this.corporationId = corporationId;
 		this.corporationName = corporationName;
 	}

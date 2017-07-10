@@ -26,6 +26,7 @@ import dao.IndustryTypeDao;
 import dao.JobOfferDao;
 import dao.OccupationTypeDao;
 import io.dropwizard.hibernate.UnitOfWork;
+import parameter.CorporationRegisterParameter;
 import parameter.JobOfferRegisterParameter;
 
 /**
@@ -134,7 +135,10 @@ public class JobOfferResources {
 	@UnitOfWork
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response corporationRegist(@NotNull Corporation corporation) throws JsonParseException, JsonMappingException, IOException {
+	public Response corporationRegist(@NotNull CorporationRegisterParameter parameter) throws JsonParseException, JsonMappingException, IOException {
+		
+		// CorporationRegisterParameterクラスの内容をCorporationクラスに変換する
+		Corporation corporation = toCorporation(parameter);
 		
 		// DB登録処理を行い、登録した企業IDを取得する
 		String responseMessage = corporationDao.create(corporation);
@@ -210,6 +214,19 @@ public class JobOfferResources {
 				parameter.getOccupationTypeId(), 
 				parameter.getCatchCopy(), 
 				parameter.getJobOfferOverview());
+	}
+	
+	/**
+	 * CorporationRegisterParameter→Corporationの変換クラス
+	 * 
+	 * @param parameter CorporationRegisterParameterクラスの変数
+	 * @return Corporationクラスの変数
+	 */
+	private Corporation toCorporation(CorporationRegisterParameter parameter) {
+		
+		return new Corporation(
+				parameter.getCorporationId(), 
+				parameter.getCorporationName());
 	}
 
 }
