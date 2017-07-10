@@ -1,7 +1,5 @@
 package api;
 
-import javax.persistence.EntityManager;
-
 import com.scottescue.dropwizard.entitymanager.EntityManagerBundle;
 
 import configuration.JobOfferConfiguration;
@@ -77,13 +75,11 @@ public class JobOfferListApi extends Application<JobOfferConfiguration>{
 	@Override
 	public void run(JobOfferConfiguration configuration, Environment environment) throws Exception {
 		
-		final EntityManager entityManager = entityManagerBundle.getEntityManagerFactory().createEntityManager();
-		
 		// Daoクラスのインスタンスを生成
-		final JobOfferDao jobOfferDao = new JobOfferDao(hibernate.getSessionFactory(), entityManager);
-		final CorporationDao corporationDao = new CorporationDao(hibernate.getSessionFactory(), entityManager);
-		final IndustryTypeDao industryTypeDao = new IndustryTypeDao(hibernate.getSessionFactory(), entityManager);
-		final OccupationTypeDao occupationTypeDao = new OccupationTypeDao(hibernate.getSessionFactory(), entityManager);
+		final JobOfferDao jobOfferDao = new JobOfferDao(hibernate.getSessionFactory());
+		final CorporationDao corporationDao = new CorporationDao(hibernate.getSessionFactory());
+		final IndustryTypeDao industryTypeDao = new IndustryTypeDao(hibernate.getSessionFactory());
+		final OccupationTypeDao occupationTypeDao = new OccupationTypeDao(hibernate.getSessionFactory());
 		
 		// Resourcesクラスのインスタンス生成
 		// 各Daoクラスのインスタンスを渡す

@@ -4,9 +4,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 
-import javax.persistence.EntityManager;
-import javax.validation.Valid;
-
 import org.hibernate.SessionFactory;
 
 import core.Corporation;
@@ -19,8 +16,8 @@ import core.Corporation;
  */
 public class CorporationDao extends CommonDao<Corporation> {
 
-	public CorporationDao(SessionFactory factory, EntityManager entityManager) {
-		super(factory, entityManager);
+	public CorporationDao(SessionFactory factory) {
+		super(factory);
 	}
 	
 	public Optional<Corporation> findById(Long id) {

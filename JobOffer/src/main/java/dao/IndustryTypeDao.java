@@ -1,7 +1,5 @@
 package dao;
 
-import javax.persistence.EntityManager;
-
 import org.hibernate.SessionFactory;
 
 import core.IndustryType;
@@ -14,8 +12,8 @@ import core.IndustryType;
  */
 public class IndustryTypeDao extends CommonDao<IndustryType> {
 
-	public IndustryTypeDao(SessionFactory sessionFactory, EntityManager entityManager) {
-		super(sessionFactory, entityManager);
+	public IndustryTypeDao(SessionFactory sessionFactory) {
+		super(sessionFactory);
 	}
 
 }

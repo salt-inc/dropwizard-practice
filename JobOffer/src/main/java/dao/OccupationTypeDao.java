@@ -1,7 +1,5 @@
 package dao;
 
-import javax.persistence.EntityManager;
-
 import org.hibernate.SessionFactory;
 
 import core.OccupationType;
@@ -14,8 +12,8 @@ import core.OccupationType;
  */
 public class OccupationTypeDao extends CommonDao<OccupationType> {
 
-	public OccupationTypeDao(SessionFactory sessionFactory, EntityManager entityManager) {
-		super(sessionFactory, entityManager);
+	public OccupationTypeDao(SessionFactory sessionFactory) {
+		super(sessionFactory);
 	}
 
 }

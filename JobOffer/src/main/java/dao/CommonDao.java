@@ -2,11 +2,7 @@ package dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 
 import io.dropwizard.hibernate.AbstractDAO;
@@ -20,12 +16,8 @@ import io.dropwizard.hibernate.AbstractDAO;
  */
 public class CommonDao<E> extends AbstractDAO<E> {
 	
-	/** EntityManager */
-	private final EntityManager entityManager;
-
-	public CommonDao(SessionFactory sessionFactory, EntityManager entityManager) {
+	public CommonDao(SessionFactory sessionFactory) {
 		super(sessionFactory);
-		this.entityManager = entityManager;
 	}
 
 	/**
@@ -33,19 +25,14 @@ public class CommonDao<E> extends AbstractDAO<E> {
 	 * 
 	 * @return 取得したデータのリスト
 	 */
+	@SuppressWarnings("unchecked")
 	public List<E> loadAllData() {
 		
-		// CriteriaBuilderを取得
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-
-		// クエリを生成
-		CriteriaQuery<E> query = builder.createQuery(getEntityClass());
-
-		Root<E> root = query.from(getEntityClass()); 
-		query.select(root);
-
-		// クエリの実行
-		List<E> loadDataList = entityManager.createQuery(query).getResultList();
+		// Criteriaのインスタンスを生成
+		Criteria criteria = criteria();
+		
+		// データの取得
+		List<E> loadDataList = criteria.list();
 
 		return loadDataList;
 	}
