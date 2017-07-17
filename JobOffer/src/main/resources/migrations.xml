@@ -27,7 +27,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="jobOfferOverview" type="varchar(500)">
-            	<constraints nullable="false"/>
             </column>
         </createTable>
         

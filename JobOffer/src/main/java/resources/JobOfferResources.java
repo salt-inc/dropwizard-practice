@@ -3,6 +3,7 @@ package resources;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -217,6 +218,14 @@ public class JobOfferResources {
 	 */
 	private JobOffer toJobOffer(JobOfferRegisterParameter parameter) {
 		
+		// 求人概要
+		String jobOfferOverview = parameter.getJobOfferOverview();
+		
+		// 求人概要が未入力の場合、nullとする
+		if (jobOfferOverview.trim().length() == 0) {
+			jobOfferOverview = null;
+		}
+		
 		return new JobOffer(
 				parameter.getJobOfferId(), 
 				parameter.getJobOfferName(), 
@@ -224,7 +233,7 @@ public class JobOfferResources {
 				parameter.getIndustryTypeId(), 
 				parameter.getOccupationTypeId(), 
 				parameter.getCatchCopy(), 
-				parameter.getJobOfferOverview());
+				jobOfferOverview);
 	}
 	
 	/**
@@ -303,6 +312,8 @@ public class JobOfferResources {
 			JobOffer jobOffer, String corporationName, 
 			String industryTypeName, String occupationTypeName) {
 		
+		Optional<String> jobOfferOverview = Optional.ofNullable(jobOffer.getJobOfferOverview());
+		
 		return new JobOfferSummary(
 				jobOffer.getJobOfferId(), 
 				jobOffer.getJobOfferName(), 
@@ -313,7 +324,7 @@ public class JobOfferResources {
 				jobOffer.getOccupationTypeId(),
 				occupationTypeName, 
 				jobOffer.getCatchCopy(), 
-				jobOffer.getJobOfferOverview());
+				jobOfferOverview.orElse("未入力"));
 	}
 
 }

@@ -58,8 +58,7 @@ public class JobOffer implements Serializable {
 	private String catchCopy;
 	
 	/** 概要 */
-	@Column(name = "jobOfferOverview", nullable = false)
-	@NotEmpty(message = "概要が空です")
+	@Column(name = "jobOfferOverview", nullable = true)
 	@Size(max = 500, message = "概要は500桁までです")
 	private String jobOfferOverview;
 	
