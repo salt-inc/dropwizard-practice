@@ -1,6 +1,7 @@
 package resources;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -28,6 +29,7 @@ import dao.OccupationTypeDao;
 import io.dropwizard.hibernate.UnitOfWork;
 import parameter.CorporationRegisterParameter;
 import parameter.JobOfferRegisterParameter;
+import summary.JobOfferSummary;
 
 /**
  * Resourceクラス。
@@ -80,14 +82,23 @@ public class JobOfferResources {
 	@Path("/job/list")
 	@Produces(MediaType.APPLICATION_JSON)
 	@UnitOfWork
-	public List<JobOffer> search(
+	public List<JobOfferSummary> search(
 			@QueryParam("industryTypeId") String industryTypeId, 
 			@QueryParam("occupationTypeId") String occupationTypeId, 
 			@QueryParam("freeWord") String freeWord) {
 		
-		List<JobOffer> jobOfferList = jobOfferDao.loadSearchResult(industryTypeId, occupationTypeId, freeWord);
+		String[] freeWordItem = freeWord.split("[ 　]+");
 		
-		return jobOfferList;
+		System.out.println(freeWordItem.length);
+		
+		List<String> corporationIdList = loadCorporationIdFreeWordSearchResult(freeWordItem);
+		
+		List<JobOffer> jobOfferList = jobOfferDao.loadSearchResult(
+				industryTypeId, occupationTypeId, freeWordItem, corporationIdList);
+		
+		List<JobOfferSummary> JobOfferSummaryList = createJobOfferSummaryList(jobOfferList);
+		
+		return JobOfferSummaryList;
 		
 	}
 	
@@ -227,6 +238,82 @@ public class JobOfferResources {
 		return new Corporation(
 				parameter.getCorporationId(), 
 				parameter.getCorporationName());
+	}
+	
+	private List<String> loadCorporationIdFreeWordSearchResult(String[] freeWordItem) {
+		
+		List<Corporation> corporationList = corporationDao.loadCorporationId(freeWordItem);
+		
+		List<String> corporationIdList = new ArrayList<String>();
+		
+		for (Corporation corporation : corporationList) {
+			
+			corporationIdList.add(corporation.getCorporationId());
+		}
+		
+		return corporationIdList;
+	}
+	
+	/**
+	 * 検索結果を作成するメソッド
+	 * JobOfferに存在しない項目の取得を行う
+	 * 
+	 * @param jobOfferList
+	 * @return
+	 */
+	private List<JobOfferSummary> createJobOfferSummaryList(List<JobOffer> jobOfferList) {
+		
+		List<JobOfferSummary> jobOfferSummaryList = new ArrayList<JobOfferSummary>();
+		
+		if (jobOfferList.isEmpty()) {
+			return jobOfferSummaryList;
+		}
+		
+		for (JobOffer jobOffer : jobOfferList) {
+			
+			String corporationName = loadCorporationName(jobOffer.getCorporationId());
+			String industryTypeName = loadIndustryTypeName(jobOffer.getIndustryTypeId());
+			String occupationTypeName = loadOccupationTypeName(jobOffer.getOccupationTypeId());
+			
+			JobOfferSummary summary = createJobOfferSummary(
+					jobOffer, corporationName, industryTypeName, occupationTypeName);
+			
+			jobOfferSummaryList.add(summary);
+		}
+		
+		return jobOfferSummaryList;
+	}
+	
+	private String loadCorporationName(String corporationId) {
+		
+		return corporationDao.loadCorporationName(corporationId);
+	}
+	
+	private String loadIndustryTypeName(String industryTypeId) {
+		
+		return industryTypeDao.loadIndustryTypeName(industryTypeId);
+	}
+	
+	private String loadOccupationTypeName(String occupationTypeId) {
+		
+		return occupationTypeDao.loadOccupationTypeName(occupationTypeId);
+	}
+	
+	private JobOfferSummary createJobOfferSummary(
+			JobOffer jobOffer, String corporationName, 
+			String industryTypeName, String occupationTypeName) {
+		
+		return new JobOfferSummary(
+				jobOffer.getJobOfferId(), 
+				jobOffer.getJobOfferName(), 
+				jobOffer.getCorporationId(), 
+				corporationName, 
+				jobOffer.getIndustryTypeId(), 
+				industryTypeName, 
+				jobOffer.getOccupationTypeId(),
+				occupationTypeName, 
+				jobOffer.getCatchCopy(), 
+				jobOffer.getJobOfferOverview());
 	}
 
 }

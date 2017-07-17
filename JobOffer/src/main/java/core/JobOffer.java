@@ -4,12 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -23,28 +18,6 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @Entity
 @Table(name = "JOB_OFFER")
-@NamedQueries(
-    {
-        @NamedQuery(
-            name = "core.JobOffer.searchResult",
-            query = "SELECT job "
-            		+ "FROM JobOffer job "
-            		+ "WHERE "
-            		+ "job.industryType.industryTypeId = "
-            		+ "CASE WHEN :industryTypeId = '' THEN job.industryType.industryTypeId "
-            		+ "ELSE :industryTypeId END "
-            		+ "AND job.occupationType.occupationTypeId = "
-            		+ "CASE WHEN :occupationTypeId = '' THEN job.occupationType.occupationTypeId "
-            		+ "ELSE :occupationTypeId END "
-            		+ "AND "
-            		+ "(job.jobOfferName LIKE :freeWord "
-            		+ "OR job.corporation.corporationName LIKE :freeWord "
-            		+ "OR job.catchCopy LIKE :freeWord "
-            		+ "OR job.jobOfferOverview LIKE :freeWord) "
-            		+ "ORDER BY job.jobOfferId "
-        )
-    }
-)
 public class JobOffer implements Serializable {
 	
 	/** 求人ID(pk) */
@@ -66,32 +39,17 @@ public class JobOffer implements Serializable {
 	@Size(min = 10, max = 10, message = "企業IDは10桁です")
 	private String corporationId;
 	
-	/** 企業情報 */
-	@ManyToOne(targetEntity = Corporation.class, fetch = FetchType.LAZY)
-    @JoinColumn(name="corporationId", referencedColumnName="corporationId", insertable=false, updatable=false)
-    private Corporation corporation;
-	
 	/** 業種ID */
 	@Column(name = "industryTypeId", nullable = false)
 	@NotEmpty(message = "業種IDが空です")
 	@Size(min = 6, max = 6, message = "業種IDは6桁です")
 	private String industryTypeId;
 	
-	/** 業種情報 */
-	@ManyToOne(targetEntity = IndustryType.class, fetch = FetchType.LAZY)
-    @JoinColumn(name="industryTypeId", referencedColumnName="industryTypeId", insertable=false, updatable=false)
-    private IndustryType industryType;
-	
 	/** 職種ID */
 	@Column(name = "occupationTypeId", nullable = false)
 	@NotEmpty(message = "職種IDが空です")
 	@Size(min = 6, max = 6, message = "職種IDは10桁です")
 	private String occupationTypeId;
-	
-	/** 職種情報 */
-	@ManyToOne(targetEntity = OccupationType.class, fetch = FetchType.LAZY)
-    @JoinColumn(name="occupationTypeId", referencedColumnName="occupationTypeId", insertable=false, updatable=false)
-    private OccupationType occupationType;
 	
 	/** キャッチコピー */
 	@Column(name = "catchCopy", nullable = false)
@@ -140,24 +98,12 @@ public class JobOffer implements Serializable {
 		return corporationId;
 	}
 
-	public Corporation getCorporation() {
-		return corporation;
-	}
-
 	public String getIndustryTypeId() {
 		return industryTypeId;
 	}
 
-	public IndustryType getIndustryType() {
-		return industryType;
-	}
-
 	public String getOccupationTypeId() {
 		return occupationTypeId;
-	}
-
-	public OccupationType getOccupationType() {
-		return occupationType;
 	}
 
 	public String getCatchCopy() {

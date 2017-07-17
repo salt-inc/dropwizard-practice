@@ -4,8 +4,10 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 
-import org.hibernate.Query;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Restrictions;
 
 import core.JobOffer;
 
@@ -27,19 +29,42 @@ public class JobOfferDao extends CommonDao<JobOffer> {
      * @return 検索条件に当てはまる求人情報リスト
      */
 	public List<JobOffer> loadSearchResult(
-			String industryTypeId, String occupationTypeId, String freeWord) {
+			String industryTypeId, String occupationTypeId, 
+			String[] freeWordItem, List<String> corporationIdList) {
 		
-		// クエリの取得
-		Query query = namedQuery("core.JobOffer.searchResult");
+		Criteria criteria = criteria();
 		
-		// クエリのパラメータを設定
-		query.setParameter("industryTypeId", industryTypeId);
-		query.setParameter("occupationTypeId", occupationTypeId);
+		if (!industryTypeId.isEmpty()) {
+			criteria.add(Restrictions.eq("industryTypeId", industryTypeId));
+		}
 		
-		// フリーワードは部分一致検索なので、前後に%を追加
-		query.setParameter("freeWord", "%" + freeWord + "%");
+		if (!occupationTypeId.isEmpty()) {
+			criteria.add(Restrictions.eq("occupationTypeId", occupationTypeId));
+		}
 		
-		return list(query);
+		if (!freeWordItem[0].isEmpty()) {
+			
+			for (String freeWord : freeWordItem) {
+				
+				String searchWord = "%" + freeWord + "%";
+				
+				// or条件のグループ化
+				Disjunction disjunction = Restrictions.disjunction();
+				
+				disjunction.add(Restrictions.like("jobOfferName", searchWord));
+				disjunction.add(Restrictions.like("catchCopy", searchWord));
+				disjunction.add(Restrictions.like("jobOfferOverview", searchWord));
+				
+				if (!corporationIdList.isEmpty()) {
+					
+					disjunction.add(Restrictions.in("corporationId", corporationIdList));
+				}
+				
+				criteria.add(disjunction);
+			}
+		}
+		
+		return criteria.list();
     }
 	
 	/**
