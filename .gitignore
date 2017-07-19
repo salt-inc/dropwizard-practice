@@ -3,5 +3,5 @@
 JobOffer/build
 JobOffer/bin
 .log
-.classpath
-.project
+JobOffer/.classpath
+JobOffer/.project
