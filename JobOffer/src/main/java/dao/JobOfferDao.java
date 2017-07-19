@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import core.JobOffer;
@@ -19,6 +20,8 @@ import core.JobOffer;
  */
 public class JobOfferDao extends CommonDao<JobOffer> {
 
+	private long sumPageCount = 0;
+
 	public JobOfferDao(SessionFactory factory) {
 		super(factory);
 	}
@@ -30,7 +33,7 @@ public class JobOfferDao extends CommonDao<JobOffer> {
      */
 	public List<JobOffer> loadSearchResult(
 			String industryTypeId, String occupationTypeId,
-			String[] freeWordItem, List<String> corporationIdList) {
+			String[] freeWordItem, List<String> corporationIdList, int pageCount) {
 
 		Criteria criteria = criteria();
 
@@ -62,6 +65,18 @@ public class JobOfferDao extends CommonDao<JobOffer> {
 
 				criteria.add(disjunction);
 			}
+		}
+
+		if (sumPageCount == 0) {
+			Long rowCount = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+			sumPageCount = (10 + rowCount) / 10;
+		}
+
+		criteria.setProjection(null);
+
+		if (pageCount != 0) {
+			criteria.setFirstResult((pageCount - 1 ) * 10);
+			criteria.setMaxResults(10);
 		}
 
 		return criteria.list();

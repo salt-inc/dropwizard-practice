@@ -31,6 +31,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 import parameter.CorporationRegisterParameter;
 import parameter.JobOfferRegisterParameter;
 import summary.JobOfferSummary;
+import views.JobOfferView;
 
 /**
  * Resourceクラス。
@@ -52,6 +53,15 @@ public class JobOfferResources {
 	/** 職種情報Dao */
 	private final OccupationTypeDao occupationTypeDao;
 
+	/** 業種ID（検索パラメータ） */
+	private String industryTypeId;
+
+	/** 職種ID（検索パラメータ） */
+	private String occupationTypeId;
+
+	/** フリーワード（検索パラメータ） */
+	private String freeWord;
+
 	/**
 	 * Resourceクラスのコンストラクタ。
 	 * 各種Daoクラスを設定する。
@@ -71,12 +81,26 @@ public class JobOfferResources {
 	}
 
 	/**
+	 * 検索画面を表示する
+	 *
+	 * @return
+	 */
+	@GET
+	@Path("/job/list/top")
+	@Produces(MediaType.TEXT_HTML)
+	public JobOfferView jobOfferView() {
+		System.out.println("JobOfferViewの確認");
+		return new JobOfferView("jobOffer.ftl");
+	}
+
+	/**
 	 * 検索処理を行い、結果を返すメソッド。（GET）
 	 * JSON形式で返却される。
 	 *
 	 * @param industryTypeId 業種ID
 	 * @param occupationTypeId 職種ID
 	 * @param freeWord フリーワード
+	 * @param pageCount 表示するページ
 	 * @return 検索結果
 	 */
 	@GET
@@ -86,16 +110,26 @@ public class JobOfferResources {
 	public List<JobOfferSummary> search(
 			@QueryParam("industryTypeId") String industryTypeId,
 			@QueryParam("occupationTypeId") String occupationTypeId,
-			@QueryParam("freeWord") String freeWord) {
+			@QueryParam("freeWord") String freeWord,
+			@QueryParam("pageCount") int pageCount) {
 
-		String[] freeWordItem = freeWord.split("[ 　]+");
+		// 検索ボタン押下時のみ、検索パラメータを更新する
+		if (pageCount == 0) {
+			this.industryTypeId = industryTypeId;
+			this.occupationTypeId = occupationTypeId;
+			this.freeWord = freeWord;
+		}
 
-		System.out.println(freeWordItem.length);
+		// 半角・全角空白でフリーワードを分割
+		String[] freeWordItem = this.freeWord.split("[ 　]+");
 
+		// フリーワードに部分一致する企業のIDをリストで取得
 		List<String> corporationIdList = loadCorporationIdFreeWordSearchResult(freeWordItem);
 
+		// 求人情報を取得
 		List<JobOffer> jobOfferList = jobOfferDao.loadSearchResult(
-				industryTypeId, occupationTypeId, freeWordItem, corporationIdList);
+				this.industryTypeId, this.occupationTypeId, freeWordItem,
+				corporationIdList, pageCount);
 
 		List<JobOfferSummary> JobOfferSummaryList = createJobOfferSummaryList(jobOfferList);
 
