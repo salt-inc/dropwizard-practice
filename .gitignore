@@ -1,0 +1,7 @@
+.metadata
+.recommenders
+JobOffer/build
+JobOffer/bin
+.log
+JobOffer/.classpath
+JobOffer/.project

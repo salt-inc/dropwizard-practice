@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="001" author="Kazushige Yamaguchi">
+        <createTable tableName="JOB_OFFER">
+            <column name="jobOfferId" type="char(10)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="jobOfferName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="corporationId" type="char(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="industryTypeId" type="char(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="occupationTypeId" type="char(6)">
+            	<constraints nullable="false"/>
+            </column>
+            <column name="catchCopy" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jobOfferOverview" type="varchar(500)">
+            </column>
+        </createTable>
+        
+        <createTable tableName="INDUSTRY_TYPE">
+        	<column name="industryTypeId" type="char(6)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="industryTypeName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="OCCUPATION_TYPE">
+        	<column name="occupationTypeId" type="char(6)">
+            	<constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="occupationTypeName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+    </changeSet>
+    
+    <changeSet id="2" author="Kazushige Yamaguchi">
+    
+    	<insert tableName="JOB_OFFER">
+    		<column name="jobOfferId" value="job1000001" />
+     		<column name="corporationId" value="cor1000001" />
+      		<column name="jobOfferName" value="テスト求人１" />
+      		<column name="industryTypeId" value="in1001" />
+      		<column name="occupationTypeId" value="oc1001" />
+      		<column name="catchCopy" value="テストキャッチコピー１" />
+      		<column name="jobOfferOverview" value="テスト概要２" />
+    	</insert>
+    	
+        <insert tableName="JOB_OFFER">
+    		<column name="jobOfferId" value="job1000002" />
+     		<column name="corporationId" value="cor1000002" />
+      		<column name="jobOfferName" value="IT業界でトップをつかもう！" />
+      		<column name="industryTypeId" value="in1002" />
+      		<column name="occupationTypeId" value="oc1002" />
+      		<column name="catchCopy" value="IT業界のパイオニア" />
+      		<column name="jobOfferOverview" value="正社員募集。未経験からベテランまで歓迎！" />
+    	</insert>
+    	
+    	<insert tableName="INDUSTRY_TYPE">
+    		<column name="industryTypeId" value="000000" />
+    		<column name="industryTypeName" value="テスト業種" />
+    	</insert>
+    	
+    	<insert tableName="INDUSTRY_TYPE">
+    		<column name="industryTypeId" value="in1001" />
+    		<column name="industryTypeName" value="業種１" />
+    	</insert>
+    	
+    	<insert tableName="INDUSTRY_TYPE">
+    		<column name="industryTypeId" value="in1002" />
+    		<column name="industryTypeName" value="IT" />
+    	</insert>
+    	
+    	<insert tableName="INDUSTRY_TYPE">
+    		<column name="industryTypeId" value="in1003" />
+    		<column name="industryTypeName" value="食品" />
+    	</insert>
+    	
+    	<insert tableName="INDUSTRY_TYPE">
+    		<column name="industryTypeId" value="in1004" />
+    		<column name="industryTypeName" value="建築" />
+    	</insert>
+    	
+    	<insert tableName="OCCUPATION_TYPE">
+    		<column name="occupationTypeId" value="000000" />
+    		<column name="occupationTypeName" value="テスト職種" />
+    	</insert>
+    	
+    	<insert tableName="OCCUPATION_TYPE">
+    		<column name="occupationTypeId" value="oc1001" />
+    		<column name="occupationTypeName" value="職種１" />
+    	</insert>
+    	
+    	<insert tableName="OCCUPATION_TYPE">
+    		<column name="occupationTypeId" value="oc1002" />
+    		<column name="occupationTypeName" value="システムエンジニア" />
+    	</insert>
+    	
+    	<insert tableName="OCCUPATION_TYPE">
+    		<column name="occupationTypeId" value="oc1003" />
+    		<column name="occupationTypeName" value="営業" />
+    	</insert>
+    	
+    	<insert tableName="OCCUPATION_TYPE">
+    		<column name="occupationTypeId" value="oc1004" />
+    		<column name="occupationTypeName" value="経理" />
+    	</insert>
+    	
+    </changeSet>
+    
+    <changeSet id="3" author="Kazushige Yamaguchi">
+    
+    	<createTable tableName="CORPORATION">
+        	<column name="corporationId" type="char(10)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="corporationName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <insert tableName="CORPORATION">
+        	<column name="corporationId" value="0000000000" />
+        	<column name="corporationName" value="テスト" />
+        </insert>
+        
+        <insert tableName="CORPORATION">
+        	<column name="corporationId" value="cor1000001" />
+        	<column name="corporationName" value="株式会社テスト" />
+        </insert>
+        
+        <insert tableName="CORPORATION">
+        	<column name="corporationId" value="cor1000002" />
+        	<column name="corporationName" value="ソリューション株式会社" />
+        </insert>
+        
+        <insert tableName="CORPORATION">
+        	<column name="corporationId" value="cor1000003" />
+        	<column name="corporationName" value="ロースハム株式会社" />
+        </insert>
+        
+        <insert tableName="CORPORATION">
+        	<column name="corporationId" value="cor1000004" />
+        	<column name="corporationName" value="有限会社山口組" />
+        </insert>
+    
+    </changeSet>
+    
+</databaseChangeLog>

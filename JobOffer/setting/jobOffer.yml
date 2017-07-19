@@ -1,0 +1,12 @@
+server:
+  rootPath: /api/
+  
+database:
+  driverClass: org.mariadb.jdbc.Driver
+  user: testUser002
+  password: password002
+  url: jdbc:mariadb://localhost/dropwizard_practice
+  properties:
+    charSet: UTF-8
+  
+
